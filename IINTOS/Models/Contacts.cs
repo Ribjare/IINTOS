@@ -18,7 +18,7 @@ namespace IINTOS.Models
         //[Range(9, 9, ErrorMessage = "")]
         public int Phone { get; set; }
 
-        public String Email { get; set; }
+        public string Email { get; set; }
 
 
     }

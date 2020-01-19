@@ -8,6 +8,14 @@
   <ItemGroup>
     <Compile Remove="Data\Migrations\20200118235047_initial1.cs" />
     <Compile Remove="Data\Migrations\20200118235047_initial1.Designer.cs" />
+    <Compile Remove="Migrations\20200118235507_initial1.cs" />
+    <Compile Remove="Migrations\20200118235507_initial1.Designer.cs" />
+    <Compile Remove="Migrations\20200119000802_initial1.cs" />
+    <Compile Remove="Migrations\20200119000802_initial1.Designer.cs" />
+    <Compile Remove="Migrations\20200119001043_initial1.cs" />
+    <Compile Remove="Migrations\20200119001043_initial1.Designer.cs" />
+    <Compile Remove="Migrations\20200119004723_initial1.cs" />
+    <Compile Remove="Migrations\20200119004723_initial1.Designer.cs" />
   </ItemGroup>
 
 
@@ -17,6 +25,8 @@
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.0" />
   </ItemGroup>
 
 

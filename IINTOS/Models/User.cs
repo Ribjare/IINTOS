@@ -13,14 +13,14 @@ namespace IINTOS.Models
     public class User: IdentityUser
     {
         /// <summary>
-        /// Name of the user
+        /// gets and sets Name of the user
         /// </summary>
         public String Name { get; set; }
-        
+
         /// <summary>
-        /// A small introduction to the user
+        /// gets and sets A small introduction to the user
         /// </summary>
-        public String? About { get; set; }
+        public string? About { get; set; } = "";
         
         /// <summary>
         /// Navigation Property for the nationality

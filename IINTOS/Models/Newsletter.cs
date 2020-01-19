@@ -20,18 +20,18 @@ namespace IINTOS.Models
         /// Gets and sets the title
         /// </summary>
         [Required(ErrorMessage = "Campo obrigatório")]
-        public String Title { get; set; }
+        public string Title { get; set; }
 
         /// <summary>
         /// Gets and sets the description
         /// </summary>
         [Required(ErrorMessage = "Campo obrigatório")]
-        public String Description { get; set; }
+        public string Description { get; set; }
 
         /// <summary>
         /// Get and sets the date
         /// </summary>
-        public DateTime date { get; set; } = new DateTime();//--ver como se mete automaticamente o atual
+        public DateTime date { get; set; }//--ver como se mete automaticamente o atual
 
         //files
 
