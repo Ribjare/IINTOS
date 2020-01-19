@@ -56,6 +56,8 @@ namespace IINTOS.Areas.Identity.Pages.Account.Manage
 
             Input = new InputModel
             {
+                Name = user.Name,
+                About = user.About,
                 PhoneNumber = phoneNumber
             };
         }
@@ -96,6 +98,15 @@ namespace IINTOS.Areas.Identity.Pages.Account.Manage
                     throw new InvalidOperationException($"Unexpected error occurred setting phone number for user with ID '{userId}'.");
                 }
             }
+            if(Input.Name != user.Name)
+            {
+                user.Name = Input.Name;
+            }
+            if (Input.About != user.About)
+            {
+                user.About = Input.About;
+            }
+            await _userManager.UpdateAsync(user);
 
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
