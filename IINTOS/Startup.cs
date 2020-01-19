@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using IINTOS.Models;
+using IINTOS.Services;
 
 namespace IINTOS
 {
@@ -28,6 +29,8 @@ namespace IINTOS
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
+
             services.AddDbContext<IINTOSContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
@@ -35,6 +38,17 @@ namespace IINTOS
                 .AddEntityFrameworkStores<IINTOSContext>();
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            EmailSender emailServer = new EmailSender(Configuration["EmailSender:Host"],
+            Configuration.GetValue<int>("EmailSender:Port"),
+            Configuration.GetValue<bool>("EmailSender:EnableSSL"),
+            Configuration["EmailSender:UserName"],
+            Configuration["EmailSender:Password"]);
+
+            services.AddTransient<EmailSender, EmailSender>(i =>
+            emailServer
+            );
+      
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
