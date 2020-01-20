@@ -34,8 +34,12 @@ namespace IINTOS
             services.AddDbContext<IINTOSContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
+                .AddRoles<IdentityRole>()
+                
                 .AddEntityFrameworkStores<IINTOSContext>();
+
             services.AddControllersWithViews();
             services.AddRazorPages();
 

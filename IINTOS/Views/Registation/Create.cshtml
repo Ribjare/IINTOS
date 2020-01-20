@@ -1,0 +1,38 @@
+﻿@model User
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Registation</h1>
+
+<form method="post">
+    <div class="form-group">
+        <label for="type">Tipo:</label>
+        <select class="form-control" name="type" required>
+            <option value="Coordinatior">Coordination</option>
+            <option value="Professor">Professor</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="number">Nome:</label>
+        <input type="text" name="name" class="form-control" required />
+
+    </div>
+    <div class="form-group">
+        <label for="number">E-Mail:</label>
+        <input type="email" name="email" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label for="nationality" class="control-label">Nationality</label>
+        <div>
+            <select id="nationality" class="form-control" name="nationality" asp-items="(List<SelectListItem>)ViewBag.Nationality"></select>
+        </div>
+    </div>
+
+
+    <input type="submit" value="Submit" class="btn btn-primary" />
+
+</form>

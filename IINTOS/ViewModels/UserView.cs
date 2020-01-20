@@ -1,18 +1,14 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace IINTOS.Models
+namespace IINTOS.ViewModels
 {
-    /// <summary>
-    /// User of the platform
-    /// Can be in this roles: School, Professor
-    /// </summary>
-    public class User: IdentityUser
+    public class UserView : PageModel
     {
-        /// <summary>
+
         /// gets and sets Name of the user
         /// </summary>
         public String Name { get; set; }
@@ -26,11 +22,8 @@ namespace IINTOS.Models
         /// Get and sets the active property
         /// </summary>
         public bool? Active { get; set; } = false;
-        
-        /// <summary>
-        /// Navigation Property for the nationality
-        /// </summary>
-        public Nationality Nationality { get; set; }
+
+
 
     }
 }

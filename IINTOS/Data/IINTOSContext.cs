@@ -16,7 +16,6 @@ namespace IINTOS.Data
         }
 
         //Add here our models
-        public DbSet<Models.Contacts> Contacts { get; set; }
         public DbSet<Models.Language> Language { get; set; }
         public DbSet<Models.Nationality> Nationality { get; set; }
         public DbSet<Models.Newsletter> Newsletter { get; set; }

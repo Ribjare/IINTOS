@@ -4,14 +4,16 @@ using IINTOS.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace IINTOS.Migrations
 {
     [DbContext(typeof(IINTOSContext))]
-    partial class IINTOSContextModelSnapshot : ModelSnapshot
+    [Migration("20200119220614_userActive")]
+    partial class userActive
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -180,9 +182,6 @@ namespace IINTOS.Migrations
 
                     b.Property<int?>("CityId")
                         .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Website")
                         .HasColumnType("nvarchar(max)");
