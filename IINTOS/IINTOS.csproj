@@ -3,6 +3,9 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>aspnet-IINTOS-55C26B36-D22E-425D-B6B9-5CEF277AB51F</UserSecretsId>
+    <Nullable>enable</Nullable>
+    <LangVersion>8.0</LangVersion>
+<NullableContextOptions>enable</NullableContextOptions>
   </PropertyGroup>
 
   <ItemGroup>
