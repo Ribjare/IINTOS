@@ -3,24 +3,23 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+
 namespace IINTOS.Models
 {
     /// <summary>
-    /// Represents a Nationality
+    /// Represents a Country
     /// </summary>
-    public class Nationality
+    public class Country
     {
         /// <summary>
-        /// gets and set id
+        /// Get and sets of the id
         /// </summary>
         public int Id { get; set; }
 
-
         /// <summary>
-        /// Gets and sets the name
+        /// Get and set of the name of the country
         /// </summary>
-        [Display(Name = "Nationality")]
+        [Display(Name = "Country")]
         public string Name { get; set; }
-
     }
 }

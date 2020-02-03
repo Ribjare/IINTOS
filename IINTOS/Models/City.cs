@@ -3,24 +3,28 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+
 namespace IINTOS.Models
 {
     /// <summary>
-    /// Represents a Nationality
+    /// Class of a city
     /// </summary>
-    public class Nationality
+    public class City
     {
         /// <summary>
-        /// gets and set id
+        /// Get and set of the id
         /// </summary>
         public int Id { get; set; }
 
-
         /// <summary>
-        /// Gets and sets the name
+        /// Get and set of the name
         /// </summary>
-        [Display(Name = "Nationality")]
+        [Display(Name = "City")]
         public string Name { get; set; }
 
+        /// <summary>
+        /// Navigation Property for Country
+        /// </summary>
+        public Country Country { get; set; }
     }
 }

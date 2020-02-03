@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -13,25 +14,33 @@ namespace IINTOS.Models
     public class User: IdentityUser
     {
         /// <summary>
-        /// Name of the user
+        /// gets and sets Name of the user
         /// </summary>
         public String Name { get; set; }
 
         /// <summary>
-        /// A small introduction to the user
+        /// Get and sets the active property, 
+        /// this is if is validated by system admin or the school cordinatior
         /// </summary>
         #nullable enable
         public String? About { get; set; }
 
+        public bool? Active { get; set; } = false;
+        
         /// <summary>
         /// Navigation Property for the nationality
         /// </summary>
         public Nationality Nationality { get; set; }
 
         /// <summary>
-        /// Navigation Property fot the contacts
+        /// FK of school
         /// </summary>
-        public Contacts Contacts { get; set; }
+        public int SchoolId { get; set; }
+
+        /// <summary>
+        /// Navigation property fo the school
+        /// </summary>
+        public School School { get; set; }
 
     }
 }

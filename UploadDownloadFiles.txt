@@ -1,0 +1,49 @@
+   [HttpPost]
+    public FileResult DownloadFile(int? fileId)
+    {
+        FilesEntities entities = new FilesEntities();
+        tblFile file = entities.tblFiles.ToList().Find(p => p.id == fileId.Value);
+        return File(file.Data, file.ContentType, file.Name);
+    }
+
+// contoller
+public async Task<IActionResult> OnPostUploadAsync()
+{
+    using (var memoryStream = new MemoryStream())
+    {
+        await FileUpload.FormFile.CopyToAsync(memoryStream);
+
+        // Upload the file if less than 2 MB
+        if (memoryStream.Length < 2097152)
+        {
+            var file = new AppFile()
+            {
+                Content = memoryStream.ToArray()
+            };
+
+            _dbContext.File.Add(file);
+
+            await _dbContext.SaveChangesAsync();
+        }
+        else
+        {
+            ModelState.AddModelError("File", "The file is too large.");
+        }
+    }
+
+    return Page();
+}
+
+
+//upload html
+@using (Html.BeginForm("Index", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <input type="file" name="postedFile" />
+    <input type="submit" id="btnUpload" value="Upload" />
+}
+//download html
+ @using (Html.BeginForm("DownloadFile", "Home", FormMethod.Post))
+    {
+        <input type="hidden" id="hfFileId" name="FileId"/>
+        <input type="submit" id="btnDownload" value="Download" style="display:none"/>
+    }
