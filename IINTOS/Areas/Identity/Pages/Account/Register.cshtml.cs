@@ -53,7 +53,7 @@ namespace IINTOS.Areas.Identity.Pages.Account
            
             [Display(Name = "About")]
             public string About { get; set; }
-
+            
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]

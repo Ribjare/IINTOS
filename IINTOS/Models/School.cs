@@ -33,9 +33,14 @@ namespace IINTOS.Models
         public string? Website { get; set; }
 
         /// <summary>
-        /// Navigation Property fot the City
+        /// Navigation Property for the City
         /// </summary>
         public City City { get; set; }
         
+        /// <summary>
+        /// Navigation property for the coordinator user
+        /// </summary>
+        public User? Coordinator { get; set; }
+
     }
 }

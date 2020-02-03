@@ -1,4 +1,6 @@
 ﻿using IINTOS.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +10,7 @@ namespace IINTOS.Data
 {
     public class DbInitializer
     {
-        public static async Task Initialize(IINTOSContext context)
+        public static async Task Initialize(IINTOSContext context, UserManager<User> userManager, IServiceProvider serviceProvider)
         {
             context.Database.EnsureCreated();
             if ( /*NOT*/ !context.Country.Any())
@@ -20,8 +22,6 @@ namespace IINTOS.Data
 
 
                 context.SaveChanges();
-                //antes de se usar as FK das marcas na adicão de carros, 
-                //tem que se chamar SaveChanges, ou daria um "FK error"
             }
             if ( /*NOT*/ !context.Nationality.Any())
             {
@@ -32,8 +32,6 @@ namespace IINTOS.Data
 
 
                 context.SaveChanges();
-                //antes de se usar as FK das marcas na adicão de carros, 
-                //tem que se chamar SaveChanges, ou daria um "FK error"
             }
 
             if ( /*NOT*/ !context.Language.Any())
@@ -43,8 +41,6 @@ namespace IINTOS.Data
 
 
                 context.SaveChanges();
-                //antes de se usar as FK das marcas na adicão de carros, 
-                //tem que se chamar SaveChanges, ou daria um "FK error"
             }
             if ( /*NOT*/ !context.School.Any())
             {
@@ -55,11 +51,31 @@ namespace IINTOS.Data
 
 
                 context.SaveChanges();
-                //antes de se usar as FK das marcas na adicão de carros, 
-                //tem que se chamar SaveChanges, ou daria um "FK error"
+            }
+            if (!context.Roles.Any())
+            {
+                // Creates the Roles
+
+                await CreateRole("Admin", serviceProvider);
+                await CreateRole("Coordinator", serviceProvider);
+                await CreateRole("Professor", serviceProvider);
+
+
+
             }
 
 
+        }
+
+        private static async Task CreateRole(string role, IServiceProvider serviceProvider)
+        {
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+            var roleCheck = await roleManager.RoleExistsAsync(role);
+            if (!roleCheck)
+            {
+                //create the roles and seed them to the database
+                await roleManager.CreateAsync(new IdentityRole(role));
+            }
         }
 
     }
