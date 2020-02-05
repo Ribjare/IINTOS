@@ -13,7 +13,7 @@ namespace IINTOS.Controllers
     /// <summary>
     /// Controler for the admins
     /// </summary>
-    [Authorize(Roles = "Admin")]
+   // [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         private readonly IINTOSContext _context;

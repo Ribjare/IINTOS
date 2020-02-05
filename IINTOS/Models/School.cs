@@ -12,8 +12,9 @@ namespace IINTOS.Models
     public class School
     {
         /// <summary>
-        /// gets and sets Id
+        /// Gets and sets Id
         /// </summary>
+        [Key]
         public int Id { get; set; }
 
         /// <summary>
@@ -23,12 +24,12 @@ namespace IINTOS.Models
         public string Name { get; set; }
 
         /// <summary>
-        /// gets and sets Address
+        /// Gets and sets Address
         /// </summary>
         public string Address { get; set; }
 
         /// <summary>
-        /// gets and sets Website
+        /// Gets and sets Website
         /// </summary>
         public string? Website { get; set; }
 
