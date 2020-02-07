@@ -26,15 +26,15 @@ namespace IINTOS.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("CountryId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("StateId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("CountryId");
+                    b.HasIndex("StateId");
 
                     b.ToTable("City");
                 });
@@ -47,6 +47,12 @@ namespace IINTOS.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SortName")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -174,6 +180,26 @@ namespace IINTOS.Migrations
                     b.HasIndex("CityId");
 
                     b.ToTable("School");
+                });
+
+            modelBuilder.Entity("IINTOS.Models.State", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("CountryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CountryId");
+
+                    b.ToTable("State");
                 });
 
             modelBuilder.Entity("IINTOS.Models.User", b =>
@@ -398,9 +424,9 @@ namespace IINTOS.Migrations
 
             modelBuilder.Entity("IINTOS.Models.City", b =>
                 {
-                    b.HasOne("IINTOS.Models.Country", "Country")
+                    b.HasOne("IINTOS.Models.State", "State")
                         .WithMany()
-                        .HasForeignKey("CountryId");
+                        .HasForeignKey("StateId");
                 });
 
             modelBuilder.Entity("IINTOS.Models.Events", b =>
@@ -419,6 +445,13 @@ namespace IINTOS.Migrations
                     b.HasOne("IINTOS.Models.City", "City")
                         .WithMany()
                         .HasForeignKey("CityId");
+                });
+
+            modelBuilder.Entity("IINTOS.Models.State", b =>
+                {
+                    b.HasOne("IINTOS.Models.Country", "Country")
+                        .WithMany()
+                        .HasForeignKey("CountryId");
                 });
 
             modelBuilder.Entity("IINTOS.Models.User", b =>

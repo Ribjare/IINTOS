@@ -24,6 +24,8 @@ namespace IINTOS.Data
         public DbSet<Models.Events> Events { get; set; }
         public DbSet<Models.City> City { get; set; }
         public DbSet<Models.Country> Country { get; set; }
+        public DbSet<Models.State> State { get; set; }
+
 
 
 

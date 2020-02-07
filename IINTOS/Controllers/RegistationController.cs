@@ -66,6 +66,7 @@ namespace IINTOS.Controllers
             var nationalityList = _context.Nationality.ToList();
             var roleList = _context.Roles.ToList();
             var schoolList = _context.School.ToList();
+            var cityList = _context.City.ToList();
 
             ViewBag.Nationality = nationalityList
                     .Select(r => new SelectListItem { Value = r.Name, Text = r.Name })
@@ -78,6 +79,8 @@ namespace IINTOS.Controllers
             ViewBag.School = schoolList
                   .Select(r => new SelectListItem { Value = r.Name, Text = r.Name })
                   .ToList();
+
+            ViewBag.City = cityList.Select(r => new SelectListItem { Value = r.Name, Text = r.Name }).ToList();
 
 
             return View();
@@ -97,11 +100,19 @@ namespace IINTOS.Controllers
             try
             {
 
-                
+
                 if (ModelState.IsValid)
                 {
-                    
+
                     var nationality = await _context.Nationality.FirstOrDefaultAsync(p => p.Id.ToString().Equals(coordinatiorSchool.Nationality));
+
+                    // Checks if the school already exits
+                    var x = _context.School.Where(p => p.Name.Equals(coordinatiorSchool.SchoolName));
+                    if (x == null)
+                    {
+                        // TODO return the error message
+                        return View();
+                    }
 
                     //Create a school to associate the user with
                     var school = new School
@@ -111,14 +122,14 @@ namespace IINTOS.Controllers
                         Website = coordinatiorSchool.SchoolWebsite
                     };
 
-                    //Create a+the user object
+                    //Create an user object
                     user = new User
                     {
                         Name = coordinatiorSchool.Name,
                         UserName = coordinatiorSchool.Email,
                         Email = coordinatiorSchool.Email,
                         About = coordinatiorSchool.About,
-                        PhoneNumber = coordinatiorSchool.PhoneNumber,///ver do parse de string para int
+                        PhoneNumber = coordinatiorSchool.PhoneNumber,
                         Active = false,
                         Nationality = nationality,
                         School = school
@@ -129,11 +140,13 @@ namespace IINTOS.Controllers
                     var result = await _userManager.CreateAsync(user, coordinatiorSchool.Password);
                     if (result.Succeeded)
                     {
+                        //The coordinator has the same privilege of the professor
                         await _userManager.AddToRoleAsync(user, "Coordinator");
-                        // _logger.LogInformation("User created a new account with password.");
+                        await _userManager.AddToRoleAsync(user, "Professor");
+
 
                         school.Coordinator = user;
-                        var result2 = _context.School.Add(school);
+                        _context.School.Add(school);
 
                         await _context.SaveChangesAsync();
 
@@ -146,7 +159,7 @@ namespace IINTOS.Controllers
                 //saida default
                 return View();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 await _userManager.DeleteAsync(user);
                 return CreateCoordinator();
@@ -165,7 +178,6 @@ namespace IINTOS.Controllers
         {
             try
             {
-                // TODO: Add insert logic here
                 if (ModelState.IsValid)
                 {
                     // 
@@ -206,7 +218,7 @@ namespace IINTOS.Controllers
                 //saida default
                 return RedirectToAction(nameof(Index));
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 return Create();
             }

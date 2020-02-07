@@ -25,6 +25,6 @@ namespace IINTOS.Models
         /// <summary>
         /// Navigation Property for Country
         /// </summary>
-        public Country Country { get; set; }
+        public State State{ get; set; }
     }
 }
