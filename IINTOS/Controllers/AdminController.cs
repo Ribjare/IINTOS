@@ -13,7 +13,7 @@ namespace IINTOS.Controllers
     /// <summary>
     /// Controler for the admins
     /// </summary>
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,Coordinator")]
     public class AdminController : Controller
     {
         private readonly IINTOSContext _context;
@@ -23,13 +23,18 @@ namespace IINTOS.Controllers
         {
             _context = context;
             _userManager = userManager;
+
+
         }
+
+        [Authorize(Roles = "Admin")]
 
         public IActionResult Index()
         {
             return View();
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ListUsers()
         {
 
@@ -62,6 +67,7 @@ namespace IINTOS.Controllers
             return View(list);
         }
 
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ApproveUser()
         {
             Dictionary<User, string> list = new Dictionary<User, string>();
@@ -92,6 +98,7 @@ namespace IINTOS.Controllers
 
             return View(list);
         }
+
 
         public async Task<IActionResult> Details(string? id)
         {
@@ -134,7 +141,12 @@ namespace IINTOS.Controllers
 
             //TODO Send some email
 
-            return RedirectToAction(nameof(ListUsers));
+            if (User.IsInRole("Admin")){ 
+                return RedirectToAction(nameof(ListUsers));
+            }
+            //if (User.IsInRole("Coordinator")){
+                return RedirectToAction("ProfessorList", "Coordinator");
+            //}
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -48,7 +48,8 @@ namespace IINTOS.Models
         [ForeignKey("Nationality")]
         public int NationalityId { get; set; }
 
-        
+        public int? SchoolCoordinationId { get; set; }
+
         //--------------- Navigation Property --------------
 
         /// <summary>
@@ -62,5 +63,6 @@ namespace IINTOS.Models
         /// </summary>
         public School? School { get; set; }
 
+        public School? SchoolCoordination { get; set; }
     }
 }

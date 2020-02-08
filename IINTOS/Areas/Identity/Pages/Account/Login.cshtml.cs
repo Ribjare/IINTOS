@@ -81,6 +81,7 @@ namespace IINTOS.Areas.Identity.Pages.Account
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                
                 if (result.Succeeded)
                 {
                     //Checks if the user is active
@@ -92,7 +93,7 @@ namespace IINTOS.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        return RedirectToAction("Registation", "Index");
+                        return RedirectToAction("Index", "Registation");
                     }
                 }
                 if (result.RequiresTwoFactor)

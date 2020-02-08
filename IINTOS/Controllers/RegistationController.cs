@@ -99,7 +99,6 @@ namespace IINTOS.Controllers
                         NationalityId = coordinatiorSchool.Nationality,
                     };
 
-
                     //Creating the user in the bd
                     var result = await _userManager.CreateAsync(user, coordinatiorSchool.Password);
                     if (result.Succeeded)
@@ -108,7 +107,8 @@ namespace IINTOS.Controllers
                         await _userManager.AddToRoleAsync(user, "Coordinator");
 
                         await _context.SaveChangesAsync();
-
+                        //
+                        //TODO: Send email to admin
 
                         return RedirectToAction("Create", "Schools", new { area = "", coordinator = user.Email});
                     }
@@ -124,16 +124,6 @@ namespace IINTOS.Controllers
                 return RedirectToAction(nameof(CreateCoordinator));
             }
         }
-
-        public ActionResult CreateSchool(User coordenador)
-        {
-
-
-            return View();
-        }
-
-
-
 
         // POST: Registation/Create
         /// <summary>
@@ -161,6 +151,12 @@ namespace IINTOS.Controllers
                         NationalityId = userViewModel.Nationality,
                         SchoolId = userViewModel.School
                     };
+                    var school = await _context.School
+                        .Include(p => p.Professors)
+                        .Include(p => p.Coordinator)
+                        .FirstOrDefaultAsync(p => p.Id == userViewModel.School);
+
+                    school.Professors.Add(user);
 
                     //Creating the user in the bd
                     var result = await _userManager.CreateAsync(user, userViewModel.Password);
@@ -168,8 +164,9 @@ namespace IINTOS.Controllers
                     {
                         await _userManager.AddToRoleAsync(user, "Professor");
                         // _logger.LogInformation("User created a new account with password.");
+                        _context.Update(school);
 
-
+                        //TODO Send email to coordinator
                         return RedirectToAction(nameof(Index));
                     }
                     return View();

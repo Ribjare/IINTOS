@@ -14,6 +14,15 @@ namespace IINTOS.Data
         {
 
         }
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            builder.Entity<School>().HasMany(p => p.Professors).WithOne(u => u.School);
+            builder.Entity<School>().HasOne(p => p.Coordinator).WithOne(u => u.SchoolCoordination);
+            // Customize the ASP.NET Identity model and override the defaults if needed.
+            // For example, you can rename the ASP.NET Identity table names and more.
+            // Add your customizations after calling base.OnModelCreating(builder);
+        }
 
         //Add here our models
         public DbSet<Models.Language> Language { get; set; }

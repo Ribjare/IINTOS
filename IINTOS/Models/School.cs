@@ -44,8 +44,8 @@ namespace IINTOS.Models
         ///
         /// <value> The identifier of the city. </value>
         ////////////////////////////////////////////////////////////////////////////////////////////////////
-        [ForeignKey("City")]
-        public int CityId { get; set; }
+        [ForeignKey("Country")]
+        public int CountryId { get; set; }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////
         /// <summary>   Gets or sets the identifier of the coordinatior. </summary>
@@ -61,13 +61,15 @@ namespace IINTOS.Models
         /// <summary>
         /// Navigation Property for the City
         /// </summary>
-        public City City { get; set; }
+        public Country Country { get; set; }
 
 
         /// <summary>
         /// Navigation property for the coordinator user
         /// </summary>
         public User? Coordinator { get; set; }
+
+        public List<User> Professors { get; set; }
 
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -1,0 +1,12 @@
+﻿@model IINTOS.Models.User
+@{
+    ViewData["Title"] = Model.School.Name + " School Administation";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<a class="nav-link text-dark" asp-action="ProfessorList">Professor list</a>
+<a class="nav-link text-dark" asp-action="ApproveProfessorList">Approve professors</a>
+<a class="nav-link text-dark" asp-area="" asp-controller="Schools" asp-action="Details" asp-route-id="@Model.School.Id" >School Details</a>
+<a class="nav-link text-dark"  asp-action="CreateProfessor">Create a Professor</a>

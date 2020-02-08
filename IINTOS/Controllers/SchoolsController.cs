@@ -37,8 +37,9 @@ namespace IINTOS.Controllers
             }
 
             var school = await _context.School
-                .Include(p => p.Coordinator)
+                .Include(p => p.Professors)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (school == null)
             {
                 return NotFound();
@@ -52,7 +53,7 @@ namespace IINTOS.Controllers
         {
             ViewBag.Coordinator = coordinator;
 
-            ViewBag.Cities = new SelectList(_context.City.Include(p => p.State).ThenInclude(p => p.Country).Where(p => p.State.Country.Name.Equals("Portugal")), "Id", "Name");
+            ViewBag.Cities = new SelectList(_context.Country, "Id", "Name");
 
             return View();
         }
@@ -62,7 +63,7 @@ namespace IINTOS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Address,Website,CityId")] School school, string? coordinatorId)
+        public async Task<IActionResult> Create([Bind("Id,Name,Address,Website,CountryId")] School school, string? coordinatorId)
         {
             if (ModelState.IsValid)
             {
