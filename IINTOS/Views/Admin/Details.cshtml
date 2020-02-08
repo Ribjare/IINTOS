@@ -1,4 +1,4 @@
-﻿@model IINTOS.Models.School
+﻿@model IINTOS.Models.User
 
 @{
     ViewData["Title"] = "Details";
@@ -18,22 +18,28 @@
             @Html.DisplayFor(model => model.Name)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Address)
+            @Html.DisplayNameFor(model => model.Email)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Address)
+            @Html.DisplayFor(model => model.Email)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Website)
+            @Html.DisplayNameFor(model => model.About)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Website)
+            @Html.DisplayFor(model => model.About)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Coordinator)
+            @Html.DisplayNameFor(model => model.Nationality.Name)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Coordinator.Name)
+            @Html.DisplayFor(model => model.Nationality.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.PhoneNumber)
         </dd>
     </dl>
 </div>

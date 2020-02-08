@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using IINTOS.Data;
 using IINTOS.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace IINTOS.Controllers
 {
     public class SchoolsController : Controller
     {
         private readonly IINTOSContext _context;
+        private readonly UserManager<User> _userManager;
 
-        public SchoolsController(IINTOSContext context)
+        public SchoolsController(IINTOSContext context, UserManager<User> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Schools
@@ -34,6 +37,7 @@ namespace IINTOS.Controllers
             }
 
             var school = await _context.School
+                .Include(p => p.Coordinator)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (school == null)
             {
@@ -43,9 +47,13 @@ namespace IINTOS.Controllers
             return View(school);
         }
 
-        // GET: Schools/Create
-        public IActionResult Create()
+
+        public IActionResult Create(String? coordinator)
         {
+            ViewBag.Coordinator = coordinator;
+
+            ViewBag.Cities = new SelectList(_context.City.Include(p => p.State).ThenInclude(p => p.Country).Where(p => p.State.Country.Name.Equals("Portugal")), "Id", "Name");
+
             return View();
         }
 
@@ -54,11 +62,24 @@ namespace IINTOS.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Address,Website")] School school)
+        public async Task<IActionResult> Create([Bind("Id,Name,Address,Website,CityId")] School school, string? coordinatorId)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(school);
+                if (coordinatorId != null)
+                {
+                    var user = await _userManager.FindByEmailAsync(coordinatorId);
+                    user.School = school;
+                    school.Coordinator = user;
+
+                    _context.Add(school);
+                    _context.Update(user);
+                }
+                else
+                {
+                    _context.Add(school);
+                }
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }

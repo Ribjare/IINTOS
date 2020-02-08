@@ -30,14 +30,19 @@ namespace IINTOS
         public void ConfigureServices(IServiceCollection services)
         {
 
-
             services.AddDbContext<IINTOSContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<User>(options =>
+            {
+                options.Password.RequiredLength = 6;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireDigit = false;
+            })
                 .AddRoles<IdentityRole>()
-                
                 .AddEntityFrameworkStores<IINTOSContext>();
 
             services.AddControllersWithViews();
@@ -52,7 +57,7 @@ namespace IINTOS
             services.AddTransient<EmailSender, EmailSender>(i =>
             emailServer
             );
-      
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

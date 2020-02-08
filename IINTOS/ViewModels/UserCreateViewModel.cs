@@ -65,14 +65,14 @@ namespace IINTOS.ViewModels
         /// </summary>
         [Required]
         [Display(Name = "Nationality")]
-        public string Nationality { get; set; }
+        public int Nationality { get; set; }
 
         /// <summary>
         /// Get and set of the School name
         /// </summary>
         [Required]
         [Display(Name = "School")]
-        public string School { get; set; }
+        public int School { get; set; }
 
     }
 }
