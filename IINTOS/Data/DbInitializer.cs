@@ -82,17 +82,18 @@ namespace IINTOS.Data
                 await CreateRole("IINTOS-Coordinator", serviceProvider);
                 //IINTOS-Professor
                 await CreateRole("IINTOS-Professor", serviceProvider);
+                context.SaveChanges();
 
             }
             if (!context.Users.Any())
             {
                 User defaultUser = new User
                 {
-                    Name = "Coordenador Mobilidade Zé",
-                    UserName = "ze",
+                    Name = "Admin Zé",
+                    UserName = "iintosdev@hotmail.com",
                     Email = "iintosdev@hotmail.com",
                     EmailConfirmed = true,
-                    About = "Coordenador default",
+                    About = "Admin default",
                     Active = true,
                     SchoolId = 11,
                     NationalityId = 1
@@ -103,10 +104,12 @@ namespace IINTOS.Data
 
                     if (result.Succeeded)
                     {
-                        await userManager.AddToRoleAsync(defaultUser, "Coordinator");
-                        //await userManager.AddToRoleAsync(defaultUser, "Admin");
+                        //await userManager.AddToRoleAsync(defaultUser, "Coordinator");
+                        await userManager.AddToRoleAsync(defaultUser, "Admin");
 
                     }
+                    context.SaveChanges();
+
                 }
                 catch (Exception e)
                 {

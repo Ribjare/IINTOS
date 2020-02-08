@@ -37,6 +37,19 @@ namespace IINTOS.Controllers
             return View();
         }
 
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// <summary>   Index registation, show the diferente types of registation for the public. </summary>
+        ///
+        /// <remarks>   Daniel Alves, 08/02/2020. </remarks>
+        ///
+        /// <returns>   A response stream to send to the IndexRegistation View. </returns>
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        public ActionResult IndexRegistation()
+        {
+            return View();
+        }
+
         // GET: Registation/Create
         public ActionResult Create()
         {

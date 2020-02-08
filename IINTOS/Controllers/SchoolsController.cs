@@ -37,6 +37,7 @@ namespace IINTOS.Controllers
             }
 
             var school = await _context.School
+                .Include(p => p.Coordinator)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (school == null)
             {
