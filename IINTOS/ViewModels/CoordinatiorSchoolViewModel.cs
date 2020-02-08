@@ -60,26 +60,9 @@ namespace IINTOS.ViewModels
         /// </summary>
         [Required]
         [Display(Name = "Nationality")]
-        public string Nationality { get; set; }
+        public int Nationality { get; set; }
 
         //School Inputs Zone
-
-        [Required]
-        [Display(Name = "School Name")]
-        public string SchoolName { get; set; }
-
-        [Required]
-        [Display(Name = "School Address")]
-        public string SchoolAddress { get; set; }
-
-        [Display(Name = "School Website")]
-        public string SchoolWebsite { get; set; }
-
-        [Required]
-        [Display(Name = "School City")]
-        public string SchoolCity { get; set; }
-
-
 
     }
 }

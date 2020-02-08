@@ -40,21 +40,10 @@ namespace IINTOS.Controllers
         // GET: Registation/Create
         public ActionResult Create()
         {
-            var nationalityList = _context.Nationality.ToList();
-            var roleList = _context.Roles.ToList();
-            var schoolList = _context.School.ToList();
 
-            ViewBag.Nationality = nationalityList
-                    .Select(r => new SelectListItem { Value = r.Name, Text = r.Name })
-                    .ToList();
+            ViewBag.Nationality = new SelectList(_context.Nationality, "Id", "Name");
 
-            ViewBag.Roles = roleList
-                   .Select(r => new SelectListItem { Value = r.Id, Text = r.Name })
-                   .ToList();
-
-            ViewBag.School = schoolList
-                  .Select(r => new SelectListItem { Value = r.Name, Text = r.Name })
-                  .ToList();
+            ViewBag.School = new SelectList(_context.School, "Id", "Name");
 
 
             return View();
@@ -63,25 +52,8 @@ namespace IINTOS.Controllers
         // GET: Registation/Create
         public ActionResult CreateCoordinator()
         {
-            var nationalityList = _context.Nationality.ToList();
-            var roleList = _context.Roles.ToList();
-            var schoolList = _context.School.ToList();
-            var cityList = _context.City.ToList();
 
-            ViewBag.Nationality = nationalityList
-                    .Select(r => new SelectListItem { Value = r.Name, Text = r.Name })
-                    .ToList();
-
-            ViewBag.Roles = roleList
-                   .Select(r => new SelectListItem { Value = r.Id, Text = r.Name })
-                   .ToList();
-
-            ViewBag.School = schoolList
-                  .Select(r => new SelectListItem { Value = r.Name, Text = r.Name })
-                  .ToList();
-
-            ViewBag.City = cityList.Select(r => new SelectListItem { Value = r.Name, Text = r.Name }).ToList();
-
+            ViewBag.Nationality = new SelectList(_context.Nationality, "Id", "Name");
 
             return View();
         }
@@ -99,28 +71,8 @@ namespace IINTOS.Controllers
             var user = new User();
             try
             {
-
-
                 if (ModelState.IsValid)
                 {
-
-                    var nationality = await _context.Nationality.FirstOrDefaultAsync(p => p.Id.ToString().Equals(coordinatiorSchool.Nationality));
-
-                    // Checks if the school already exits
-                    var x = _context.School.Where(p => p.Name.Equals(coordinatiorSchool.SchoolName));
-                    if (x == null)
-                    {
-                        // TODO return the error message
-                        return View();
-                    }
-
-                    //Create a school to associate the user with
-                    var school = new School
-                    {
-                        Name = coordinatiorSchool.SchoolName,
-                        Address = coordinatiorSchool.SchoolAddress,
-                        Website = coordinatiorSchool.SchoolWebsite
-                    };
 
                     //Create an user object
                     user = new User
@@ -131,8 +83,7 @@ namespace IINTOS.Controllers
                         About = coordinatiorSchool.About,
                         PhoneNumber = coordinatiorSchool.PhoneNumber,
                         Active = false,
-                        Nationality = nationality,
-                        School = school
+                        NationalityId = coordinatiorSchool.Nationality,
                     };
 
 
@@ -142,16 +93,11 @@ namespace IINTOS.Controllers
                     {
                         //The coordinator has the same privilege of the professor
                         await _userManager.AddToRoleAsync(user, "Coordinator");
-                        await _userManager.AddToRoleAsync(user, "Professor");
-
-
-                        school.Coordinator = user;
-                        _context.School.Add(school);
 
                         await _context.SaveChangesAsync();
 
 
-                        return RedirectToAction(nameof(Index));
+                        return RedirectToAction("Create", "Schools", new { area = "", coordinator = user.Email});
                     }
                     return View();
                 }
@@ -162,9 +108,19 @@ namespace IINTOS.Controllers
             catch (Exception e)
             {
                 await _userManager.DeleteAsync(user);
-                return CreateCoordinator();
+                return RedirectToAction(nameof(CreateCoordinator));
             }
         }
+
+        public ActionResult CreateSchool(User coordenador)
+        {
+
+
+            return View();
+        }
+
+
+
 
         // POST: Registation/Create
         /// <summary>
@@ -181,18 +137,16 @@ namespace IINTOS.Controllers
                 if (ModelState.IsValid)
                 {
                     // 
-                    var nationality = await _context.Nationality.FirstOrDefaultAsync(p => p.Id.ToString().Equals(userViewModel.Nationality));
-                    var school = await _context.School.FirstOrDefaultAsync(p => p.Name.Equals(userViewModel.School));
                     var user = new User
                     {
                         Name = userViewModel.Name,
                         UserName = userViewModel.Email,
                         Email = userViewModel.Email,
                         About = userViewModel.About,
-                        PhoneNumber = userViewModel.PhoneNumber,///ver do parse de string para int
+                        PhoneNumber = userViewModel.PhoneNumber,
                         Active = false,
-                        Nationality = nationality,
-                        School = school
+                        NationalityId = userViewModel.Nationality,
+                        SchoolId = userViewModel.School
                     };
 
                     //Creating the user in the bd
@@ -216,7 +170,7 @@ namespace IINTOS.Controllers
                 }
 
                 //saida default
-                return RedirectToAction(nameof(Index));
+                return Create();
             }
             catch (Exception e)
             {

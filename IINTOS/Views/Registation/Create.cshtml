@@ -44,13 +44,13 @@
             <div class="form-group">
                 <label asp-for="Nationality" class="control-label"></label>
                 <div>
-                    <select id="type" class="form-control" asp-for="Nationality" name="Nationality" asp-items="(List<SelectListItem>)ViewBag.Nationality"></select>
+                    @Html.DropDownList("Nationality", "Select a Value")
                 </div>
             </div>
             <div class="form-group">
                 <label asp-for="School" class="control-label"></label>
                 <div>
-                    <select id="type" class="form-control" asp-for="School" name="School" asp-items="(List<SelectListItem>)ViewBag.School"></select>
+                    @Html.DropDownList("School", "Select a Value")
                 </div>
             </div>
             <div class="form-group">

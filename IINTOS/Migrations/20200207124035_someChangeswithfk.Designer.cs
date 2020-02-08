@@ -4,14 +4,16 @@ using IINTOS.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace IINTOS.Migrations
 {
     [DbContext(typeof(IINTOSContext))]
-    partial class IINTOSContextModelSnapshot : ModelSnapshot
+    [Migration("20200207124035_someChangeswithfk")]
+    partial class someChangeswithfk
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -259,7 +261,7 @@ namespace IINTOS.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("SchoolId")
+                    b.Property<int>("SchoolId")
                         .HasColumnType("int");
 
                     b.Property<string>("SecurityStamp")
@@ -285,8 +287,7 @@ namespace IINTOS.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.HasIndex("SchoolId")
-                        .IsUnique()
-                        .HasFilter("[SchoolId] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("AspNetUsers");
                 });
@@ -474,7 +475,9 @@ namespace IINTOS.Migrations
 
                     b.HasOne("IINTOS.Models.School", "School")
                         .WithOne("Coordinator")
-                        .HasForeignKey("IINTOS.Models.User", "SchoolId");
+                        .HasForeignKey("IINTOS.Models.User", "SchoolId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

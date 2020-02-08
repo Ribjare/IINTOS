@@ -1,30 +1,56 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace IINTOS.Models
 {
-    /// <summary>
-    /// Class of a city
-    /// </summary>
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// <summary>   Represents a city. </summary>
+    ///
+    /// <remarks>   Daniel Alves, 07/02/2020. </remarks>
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+
     public class City
     {
-        /// <summary>
-        /// Get and set of the id
-        /// </summary>
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// <summary>   Gets or sets the identifier. </summary>
+        ///
+        /// <value> The identifier. </value>
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+
         public int Id { get; set; }
 
-        /// <summary>
-        /// Get and set of the name
-        /// </summary>
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// <summary>   Gets or sets the name. </summary>
+        ///
+        /// <value> The name. </value>
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+
         [Display(Name = "City")]
         public string Name { get; set; }
 
-        /// <summary>
-        /// Navigation Property for Country
-        /// </summary>
+        //--------------------- Foreign keys ------------------------
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// <summary>   Gets or sets the identifier of the state. </summary>
+        ///
+        /// <value> The identifier of the state. </value>
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        [ForeignKey("State")]
+        public int StateId { get; set; }
+
+
+        //------------ Navigation Property --------------
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// <summary>   Gets or sets the state. </summary>
+        ///
+        /// <value> The state. </value>
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+
         public State State{ get; set; }
     }
 }

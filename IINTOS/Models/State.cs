@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,6 +20,19 @@ namespace IINTOS.Models
         /// Get and set for the Name of the state
         /// </summary>
         public string Name { get; set; }
+
+
+        //--------------------- Foreign keys ------------------------
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// <summary>   Gets or sets the identifier of the country. </summary>
+        ///
+        /// <value> The identifier of the country. </value>
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        [ForeignKey("Country")]
+        public int CountryId { get; set; }
+
+        //------------ Navigation Property --------------
 
         /// <summary>
         /// Get and Set for the Country

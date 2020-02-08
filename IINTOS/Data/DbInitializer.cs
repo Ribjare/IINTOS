@@ -36,6 +36,84 @@ namespace IINTOS.Data
         public static async Task Initialize(IINTOSContext context, UserManager<User> userManager, IServiceProvider serviceProvider)
         {
             context.Database.EnsureCreated();
+            if ( /*NOT*/ !context.Nationality.Any())
+            {
+                // Adds Country dor tests
+                context.Nationality.Add(new Nationality { Name = "Portuguese" });
+                context.Nationality.Add(new Nationality { Name = "Italian" });
+                context.Nationality.Add(new Nationality { Name = "Czech" });
+
+
+                context.SaveChanges();
+            }
+
+            if ( /*NOT*/ !context.Language.Any())
+            {
+                // Adds Languages for tests
+                context.Language.Add(new Language { Name = "Portuguese" });
+
+
+                context.SaveChanges();
+            }
+            if ( /*NOT*/ !context.School.Any())
+            {
+                // Adds School for tests
+                context.School.Add(new School { Name = "ESTStubal", Address = "Rua do IPS", Website = "https://www.estsetubal.ips.pt/", CityId = 1 });
+                context.School.Add(new School { Name = "Palacký University Olomou", Address = "Křížkovského ", Website = "https://www.upol.cz/en/", CityId = 2 });
+
+
+
+                context.SaveChanges();
+            }
+            if (!context.Roles.Any())
+            {
+                // Creates the Roles
+
+                //System admin
+                await CreateRole("Admin", serviceProvider);
+
+                //Mobility Area
+                await CreateRole("Coordinator", serviceProvider);
+                await CreateRole("Professor", serviceProvider);
+                await CreateRole("Guest-Professor", serviceProvider);
+
+                //IINTOS Area
+                //IINTOS-Coordinator
+                await CreateRole("IINTOS-Coordinator", serviceProvider);
+                //IINTOS-Professor
+                await CreateRole("IINTOS-Professor", serviceProvider);
+
+            }
+            if (!context.Users.Any())
+            {
+                User defaultUser = new User
+                {
+                    Name = "Coordenador Mobilidade Zé",
+                    UserName = "ze",
+                    Email = "iintosdev@hotmail.com",
+                    EmailConfirmed = true,
+                    About = "Coordenador default",
+                    Active = true,
+                    SchoolId = 11,
+                    NationalityId = 1
+                };
+                try
+                {
+                    var result = await userManager.CreateAsync(defaultUser, "123456");
+
+                    if (result.Succeeded)
+                    {
+                        await userManager.AddToRoleAsync(defaultUser, "Coordinator");
+                        //await userManager.AddToRoleAsync(defaultUser, "Admin");
+
+                    }
+                }
+                catch (Exception e)
+                {
+
+                }
+            }
+
             if ( /*NOT*/ !context.Country.Any())
             {
 
@@ -79,7 +157,7 @@ namespace IINTOS.Data
                             Country = country
                         };
 
-                        context.Add(newState); 
+                        context.Add(newState);
 
                     }
                     context.SaveChanges();
@@ -110,58 +188,6 @@ namespace IINTOS.Data
 
                 context.SaveChanges();
             }
-            if ( /*NOT*/ !context.Nationality.Any())
-            {
-                // Adds Country dor tests
-                context.Nationality.Add(new Nationality { Name = "Portuguese" });
-                context.Nationality.Add(new Nationality { Name = "Italian" });
-                context.Nationality.Add(new Nationality { Name = "Czech" });
-
-
-                context.SaveChanges();
-            }
-
-            if ( /*NOT*/ !context.Language.Any())
-            {
-                // Adds Languages for tests
-                context.Language.Add(new Language { Name = "Portuguese" });
-
-
-                context.SaveChanges();
-            }
-            if ( /*NOT*/ !context.School.Any())
-            {
-                // Adds School for tests
-                context.School.Add(new School { Name = "ESTStubal", Address = "Rua do IPS", Website = "https://www.estsetubal.ips.pt/" });
-                context.School.Add(new School { Name = "Palacký University Olomou", Address = "Křížkovského ", Website = "https://www.upol.cz/en/" });
-
-
-
-                context.SaveChanges();
-            }
-            if (!context.Roles.Any())
-            {
-                // Creates the Roles
-
-                //System admin
-                await CreateRole("Admin", serviceProvider);
-
-                //Mobility Area
-                await CreateRole("Coordinator", serviceProvider);
-                await CreateRole("Professor", serviceProvider);
-                await CreateRole("Guest-Professor", serviceProvider);
-
-                //IINTOS Area
-                //IINTOS-Coordinator
-                await CreateRole("IINTOS-Coordinator", serviceProvider);
-                //IINTOS-Professor
-                await CreateRole("IINTOS-Professor", serviceProvider);
-
-
-
-            }
-
-
         }
 
         private static async Task CreateRole(string role, IServiceProvider serviceProvider)
