@@ -19,6 +19,7 @@
     <Compile Remove="Migrations\20200119004723_initial1.Designer.cs" />
     <Compile Remove="Migrations\20200119105357_customUserData.cs" />
     <Compile Remove="Migrations\20200119105357_customUserData.Designer.cs" />
+    <Compile Remove="Models\EmptyCSharpFile.cs" />
   </ItemGroup>
 
 

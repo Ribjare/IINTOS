@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using IINTOS.Models;
@@ -25,6 +25,7 @@ namespace IINTOS.Data
         public DbSet<Models.City> City { get; set; }
         public DbSet<Models.Country> Country { get; set; }
         public DbSet<Models.State> State { get; set; }
+        public DbSet<IINTOS.Models.Project> Project { get; set; }
 
 
 
