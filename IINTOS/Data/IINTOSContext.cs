@@ -26,6 +26,7 @@ namespace IINTOS.Data
         public DbSet<Models.Country> Country { get; set; }
         public DbSet<Models.State> State { get; set; }
         public DbSet<IINTOS.Models.Project> Project { get; set; }
+        public DbSet<IINTOS.Models.SchoolProject> SchoolProject { get; set; }
 
 
 

@@ -16,7 +16,7 @@ namespace IINTOS.Migrations
 						 Description = table.Column<string>(nullable: false),
 						 Links = table.Column<string>(nullable: true),
 						 TargetAudience = table.Column<string>(nullable: true),
-						 Type = table.Column<char>(nullable: false)
+						 Type = table.Column<string>(nullable: false)
 					 },
 					 constraints: table =>
 					 {
