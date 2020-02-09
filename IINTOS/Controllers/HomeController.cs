@@ -35,7 +35,42 @@ namespace IINTOS.Controllers
         public async Task<IActionResult> Privacy()
         {
             //await c();
-            await createRolesandUsers();
+            //await createRolesandUsers();
+            return View();
+        }
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// <summary>   Gets the about page. </summary>
+        ///
+        /// <remarks>   Daniel Alves, 09/02/2020. </remarks>
+        ///
+        /// <returns>   An IActionResult. </returns>
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        public IActionResult About()
+        {
+            return View();
+        }
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// <summary>   Gets the partner page. </summary>
+        ///
+        /// <remarks>   Daniel Alves, 09/02/2020. </remarks>
+        ///
+        /// <returns>   An IActionResult. </returns>
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        public IActionResult Partner()
+        {
+            return View();
+        }
+
+        public IActionResult IpsPage()
+        {
+            return View();
+        }
+        public IActionResult OlomucPage()
+        {
             return View();
         }
 
