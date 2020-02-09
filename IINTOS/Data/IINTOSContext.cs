@@ -27,9 +27,8 @@ namespace IINTOS.Data
         public DbSet<Models.State> State { get; set; }
         public DbSet<IINTOS.Models.Project> Project { get; set; }
         public DbSet<IINTOS.Models.SchoolProject> SchoolProject { get; set; }
-
-
-
-
-    }
+        public DbSet<IINTOS.Models.Activity> Activity { get; set; }
+        public DbSet<IINTOS.Models.ActivityProfessor> ActivityProfessor { get; set; }
+        public DbSet<IINTOS.Models.ActivityStudent> ActivityStudent { get; set; }
+  }
 }

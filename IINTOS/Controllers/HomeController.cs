@@ -9,6 +9,7 @@ using IINTOS.Models;
 using IINTOS.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using Activity = System.Diagnostics.Activity;
 
 namespace IINTOS.Controllers
 {
