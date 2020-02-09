@@ -20,14 +20,12 @@ namespace IINTOS.Models
         public String Name { get; set; }
 
         /// <summary>
-        /// gets and sets A small introduction to the user
-        /// </summary>
-        public string? About { get; set; } = "";
-
-        /// <summary>
         /// Get and sets the active property, 
         /// this is if is validated by system admin or the school cordinatior
         /// </summary>
+        #nullable enable
+        public String? About { get; set; }
+
         public bool? Active { get; set; } = false;
 
 

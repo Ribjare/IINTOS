@@ -4,14 +4,16 @@ using IINTOS.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace IINTOS.Migrations
 {
     [DbContext(typeof(IINTOSContext))]
-    partial class IINTOSContextModelSnapshot : ModelSnapshot
+    [Migration("20200209211731_CreateActivityStudent")]
+    partial class CreateActivityStudent
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -208,10 +210,10 @@ namespace IINTOS.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("CoordinatiorId")
+                    b.Property<int>("CityId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CountryId")
+                    b.Property<int?>("CoordinatiorId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -223,7 +225,7 @@ namespace IINTOS.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CountryId");
+                    b.HasIndex("CityId");
 
                     b.ToTable("School");
                 });
@@ -322,9 +324,6 @@ namespace IINTOS.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("SchoolCoordinationId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("SchoolId")
                         .HasColumnType("int");
 
@@ -350,11 +349,9 @@ namespace IINTOS.Migrations
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.HasIndex("SchoolCoordinationId")
+                    b.HasIndex("SchoolId")
                         .IsUnique()
-                        .HasFilter("[SchoolCoordinationId] IS NOT NULL");
-
-                    b.HasIndex("SchoolId");
+                        .HasFilter("[SchoolId] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -520,9 +517,9 @@ namespace IINTOS.Migrations
 
             modelBuilder.Entity("IINTOS.Models.School", b =>
                 {
-                    b.HasOne("IINTOS.Models.Country", "Country")
+                    b.HasOne("IINTOS.Models.City", "City")
                         .WithMany()
-                        .HasForeignKey("CountryId")
+                        .HasForeignKey("CityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -544,13 +541,9 @@ namespace IINTOS.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("IINTOS.Models.School", "SchoolCoordination")
-                        .WithOne("Coordinator")
-                        .HasForeignKey("IINTOS.Models.User", "SchoolCoordinationId");
-
                     b.HasOne("IINTOS.Models.School", "School")
-                        .WithMany("Professors")
-                        .HasForeignKey("SchoolId");
+                        .WithOne("Coordinator")
+                        .HasForeignKey("IINTOS.Models.User", "SchoolId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

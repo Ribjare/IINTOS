@@ -4,14 +4,16 @@ using IINTOS.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace IINTOS.Migrations
 {
     [DbContext(typeof(IINTOSContext))]
-    partial class IINTOSContextModelSnapshot : ModelSnapshot
+    [Migration("20200208165804_CreateSchoolProject")]
+    partial class CreateSchoolProject
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -166,38 +168,6 @@ namespace IINTOS.Migrations
                     b.ToTable("Newsletter");
                 });
 
-            modelBuilder.Entity("IINTOS.Models.Project", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Goal")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Links")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("TargetAudience")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Project");
-                });
-
             modelBuilder.Entity("IINTOS.Models.School", b =>
                 {
                     b.Property<int>("Id")
@@ -208,10 +178,10 @@ namespace IINTOS.Migrations
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("CoordinatiorId")
+                    b.Property<int>("CityId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CountryId")
+                    b.Property<int?>("CoordinatiorId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -223,27 +193,9 @@ namespace IINTOS.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CountryId");
+                    b.HasIndex("CityId");
 
                     b.ToTable("School");
-                });
-
-            modelBuilder.Entity("IINTOS.Models.SchoolProject", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("ProjectId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SchoolId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("SchoolProject");
                 });
 
             modelBuilder.Entity("IINTOS.Models.State", b =>
@@ -322,9 +274,6 @@ namespace IINTOS.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("SchoolCoordinationId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("SchoolId")
                         .HasColumnType("int");
 
@@ -350,11 +299,9 @@ namespace IINTOS.Migrations
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.HasIndex("SchoolCoordinationId")
+                    b.HasIndex("SchoolId")
                         .IsUnique()
-                        .HasFilter("[SchoolCoordinationId] IS NOT NULL");
-
-                    b.HasIndex("SchoolId");
+                        .HasFilter("[SchoolId] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -520,9 +467,9 @@ namespace IINTOS.Migrations
 
             modelBuilder.Entity("IINTOS.Models.School", b =>
                 {
-                    b.HasOne("IINTOS.Models.Country", "Country")
+                    b.HasOne("IINTOS.Models.City", "City")
                         .WithMany()
-                        .HasForeignKey("CountryId")
+                        .HasForeignKey("CityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -544,13 +491,9 @@ namespace IINTOS.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("IINTOS.Models.School", "SchoolCoordination")
-                        .WithOne("Coordinator")
-                        .HasForeignKey("IINTOS.Models.User", "SchoolCoordinationId");
-
                     b.HasOne("IINTOS.Models.School", "School")
-                        .WithMany("Professors")
-                        .HasForeignKey("SchoolId");
+                        .WithOne("Coordinator")
+                        .HasForeignKey("IINTOS.Models.User", "SchoolId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
