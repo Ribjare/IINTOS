@@ -52,6 +52,7 @@ namespace IINTOS.Data
                         {
                             Name = x.name,
                             PhoneCode = x.phone_code,
+                            SortName = x.iso2
                         };
 
                         context.Add(newCountry);
