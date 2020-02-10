@@ -1,0 +1,62 @@
+@model IEnumerable<IINTOS.Models.Project>
+
+@{
+    ViewData["Title"] = "Projects";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    string? coordinatorId = ViewBag.Coordinator;
+}
+
+<p>
+    <a asp-action="Create" style="margin-left: auto;">Create Project</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Goal)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Links)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TargetAudience)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Type)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Goal)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Links)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TargetAudience)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Create" asp-controller="SchoolProject" asp-route-id="@item.Id">Create Activity</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
