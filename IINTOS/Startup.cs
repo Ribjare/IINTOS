@@ -83,26 +83,6 @@ namespace IINTOS
 			app.UseAuthentication();
 			app.UseAuthorization();
 
-
-			var host = CreateHostBuilder().Build();
-
-			using (var scope = host.Services.CreateScope())
-			{
-				var services = scope.ServiceProvider;
-				try
-				{
-					var context = services.GetRequiredService<IINTOSContext>();
-					var userManager = services.GetRequiredService<UserManager<User>>();
-					DbInitializer.Initialize(context, userManager, services).Wait();
-				}
-				catch (Exception ex)
-				{
-					var logger = services.GetRequiredService<ILogger<Program>>();
-					logger.LogError(ex, "An error occurred while seeding the database.");
-				}
-			}
-
-
 			app.UseEndpoints(endpoints =>
 			{
 				endpoints.MapControllerRoute(
@@ -111,12 +91,5 @@ namespace IINTOS
 				endpoints.MapRazorPages();
 			});
 		}
-
-		public static IHostBuilder CreateHostBuilder() =>
-					 Host.CreateDefaultBuilder()
-							 .ConfigureWebHostDefaults(webBuilder =>
-							 {
-								 webBuilder.UseStartup<Startup>();
-							 });
 	}
 }
