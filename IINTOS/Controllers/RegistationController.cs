@@ -57,7 +57,7 @@ namespace IINTOS.Controllers
             ViewBag.Nationality = new SelectList(_context.Nationality, "Id", "Name");
 
             ViewBag.School = new SelectList(_context.School, "Id", "Name");
-
+           // Give the role of professor to this user
 
             return View();
         }
@@ -163,6 +163,70 @@ namespace IINTOS.Controllers
                     if (result.Succeeded)
                     {
                         await _userManager.AddToRoleAsync(user, "Professor");
+                        // _logger.LogInformation("User created a new account with password.");
+                        _context.Update(school);
+
+                        //TODO Send email to coordinator
+                        return RedirectToAction(nameof(Index));
+                    }
+                    return View();
+                }
+                else
+                {
+                    ViewData["_alert.type"] = "error";
+                    ViewData["_alert.title"] = "Erro";
+                    ViewData["_alert.body"] = ". Id:T002";
+
+                }
+
+                //saida default
+                return Create();
+            }
+            catch (Exception e)
+            {
+                return Create();
+            }
+        }
+
+
+        public ActionResult CreateIINTOSProfessor()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> CreateIINTOSProfessor(UserCreateViewModel userViewModel)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    // 
+                    var user = new User
+                    {
+                        Name = userViewModel.Name,
+                        UserName = userViewModel.Email,
+                        Email = userViewModel.Email,
+                        About = userViewModel.About,
+                        PhoneNumber = userViewModel.PhoneNumber,
+                        Active = false,
+                        NationalityId = userViewModel.Nationality,
+                        SchoolId = userViewModel.School
+                    };
+                    var school = await _context.School
+                        .Include(p => p.Professors)
+                        .Include(p => p.Coordinator)
+                        .FirstOrDefaultAsync(p => p.Id == userViewModel.School);
+
+                    school.Professors.Add(user);
+
+                    //Creating the user in the bd
+                    var result = await _userManager.CreateAsync(user, userViewModel.Password);
+                    if (result.Succeeded)
+                    {
+                        await _userManager.AddToRoleAsync(user, "IINTOS-Professor");
                         // _logger.LogInformation("User created a new account with password.");
                         _context.Update(school);
 

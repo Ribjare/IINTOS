@@ -164,6 +164,7 @@ namespace IINTOS.Data
             }
             if (!context.Users.Any())
             {
+                // Admin
                 User defaultUser = new User
                 {
                     Name = "Admin Zé",
@@ -174,14 +175,33 @@ namespace IINTOS.Data
                     Active = true,
                     NationalityId = 1
                 };
+
+
+                // Coordenador IINTOS
+                User coordenadorIINTOS = new User
+                {
+                    Name = "Coordenador Anturio",
+                    UserName = "iceptalves@gmail.com",
+                    Email = "iceptalves@gmail.com",
+                    EmailConfirmed = true,
+                    About = "Coordenador IINTOS default",
+                    Active = true,
+                    NationalityId = 1
+                };
+
+
                 try
                 {
                     var result = await userManager.CreateAsync(defaultUser, "123456");
+                    var result2 = await userManager.CreateAsync(coordenadorIINTOS, "123456");
 
-                    if (result.Succeeded)
+                    if (result.Succeeded && result2.Succeeded)
                     {
                         //await userManager.AddToRoleAsync(defaultUser, "Coordinator");
                         await userManager.AddToRoleAsync(defaultUser, "Admin");
+
+                        await userManager.AddToRoleAsync(coordenadorIINTOS, "IINTOS-Coordinator");
+
 
                     }
                     context.SaveChanges();

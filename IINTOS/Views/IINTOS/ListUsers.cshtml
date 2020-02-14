@@ -1,0 +1,39 @@
+﻿
+@model Dictionary<User, string>
+@{
+    ViewData["Title"] = "All Users";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Role</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Account is active?</th>
+            <th scope="col">Details</th>
+            <th scope="col">Edit</th>
+            <th scope="col">Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (User user in Model.Keys)
+        {
+         <tr>
+
+                <td scope="row">@Model.GetValueOrDefault(user)</td>
+                <td>@user.Name</td>
+                <td>@user.Email</td>
+                <td>@user.Active</td>
+                <td><a class="btn btn-info" asp-action="Details" asp-route-id="@user.Id">Details</a></td>
+                <td><a class="btn btn-info" asp-action="EditUser" asp-route-id="@user.Id">Edit</a></td>
+                @if (!user.Email.Equals("iintosdev@hotmail.com"))
+                {
+                    <td><a class="btn btn-danger" asp-action="DeleteAction" asp-route-id="@user.Id">Delete</a></td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
