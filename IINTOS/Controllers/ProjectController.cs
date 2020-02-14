@@ -194,12 +194,39 @@ namespace IINTOS
 			{
 				Name = school.Name,
 				Address = school.Address,
-				Website = school.Website
+				Website = school.Website,
+				Coordinator = school.Coordinator
 			}
 			);
 
 			return View(schools);
 		}
+
+		// GET: Project/Activity/5
+		public IActionResult Activity()
+		{
+			return View();
+		}
+
+
+		// POST: Project/CreateActivity
+		// To protect from overposting attacks, please enable the specific properties you want to bind to, for
+		// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> CreateActivity([Bind("Title,Description")] Activity activity)
+		{
+			if (ModelState.IsValid)
+			{
+				_context.Add(activity);
+				await _context.SaveChangesAsync();
+
+				return RedirectToAction(nameof(Activity));
+			}
+
+			return View(activity);
+		}
+
 
 		private bool ProjectExists(int id)
 		{

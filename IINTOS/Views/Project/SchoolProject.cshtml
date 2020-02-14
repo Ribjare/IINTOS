@@ -17,14 +17,11 @@
               <div class="list-group" id="list-tab" role="tablist">
                 <a asp-action="Details" asp-route-id=@ViewContext.RouteData.Values["id"] class="list-group-item list-group-item-action">Project</a>
                 <a class="list-group-item list-group-item-action active" id="list-settings-list" data-toggle="list" href="#list-schools" role="tab" aria-controls="schools">Schools</a>
-                <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#list-activities" role="tab" aria-controls="activities">Activities</a>
-                <a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list" href="#list-messages" role="tab" aria-controls="messages">Students</a>
-                <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="#list-settings" role="tab" aria-controls="settings">Professors</a>
+                <a asp-action="Activity" asp-route-id=@ViewContext.RouteData.Values["id"] class="list-group-item list-group-item-action">Activities</a>
               </div>
             </div>
             <div class="col-8">
               <div class="tab-content" id="nav-tabContent">
-                <div class="tab-pane fade show" id="list-home" role="tabpanel" aria-labelledby="list-home-list">Project</div>
                 <div class="tab-pane fade show active" id="list-schools" role="tabpanel" aria-labelledby="list-schools-list">
                     @foreach (var item in Model)
                         {
@@ -32,13 +29,25 @@
                           <li class="list-group-item"><b>@Html.DisplayNameFor(model => model.Name): </b>  @Html.DisplayFor(modelItem => item.Name)</li>
                           <li class="list-group-item"><b>@Html.DisplayNameFor(model => model.Address): </b>  @Html.DisplayFor(modelItem => item.Address)</li>
                           <li class="list-group-item"><b>@Html.DisplayNameFor(model => model.Website): </b>  @Html.DisplayFor(modelItem => item.Website)</li>
+                          <li class="list-group-item"><b>@Html.DisplayNameFor(model => model.Coordinator): </b>  @Html.DisplayFor(modelItem => item.Coordinator)</li>
                         </ul>
                         <br>
                         }
+                  @if (@Model.LongCount() == 1) {
+                      <form asp-action="CreateSchoolProject">
+                        <div class="form-group">
+                            <label class="control-label"><b>Select a partner:</b></label>
+                              <select class="form-control">
+                                  <option value="XXXX">1111</option>
+                                  <option value="XXXX">2222</option>
+                                  <option value="XXXX">3333</option>
+                              </select>
+                            <span class="text-danger"></span>
+                        </div>
+                      </form>
+                  }
+
                 </div>
-                <div class="tab-pane fade" id="list-activities" role="tabpanel" aria-labelledby="list-activities-list">Activities</div>
-                <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">Students</div>
-                <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">Professors</div>
               </div>
             </div>
           </div>
