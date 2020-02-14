@@ -192,6 +192,33 @@ namespace IINTOS.Data
 				{
 
 				}
+
+				User coordinatorUser = new User
+				{
+					Name = "Coordinator Zé",
+					UserName = "iintosc@hotmail.com",
+					Email = "iintosc@hotmail.com",
+					EmailConfirmed = true,
+					About = "Coordinator default",
+					Active = true,
+					NationalityId = 1
+				};
+				try
+				{
+					var result = await userManager.CreateAsync(coordinatorUser, "123456");
+
+					if (result.Succeeded)
+					{
+						await userManager.AddToRoleAsync(coordinatorUser, "Coordinator");
+
+					}
+					context.SaveChanges();
+
+				}
+				catch (Exception e)
+				{
+
+				}
 			}
 
 
