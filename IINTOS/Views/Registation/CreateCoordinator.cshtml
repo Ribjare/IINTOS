@@ -5,11 +5,11 @@
 }
 
 
-<h1>Coordinator Registation</h1>
+<h1>Character Creation Coordinator</h1>
 
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="CreateCoordinator" enctype="multipart/form-data">
+        <form asp-action="CreateCoordinator">
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -46,13 +46,9 @@
                 <label asp-for="Nationality" class="control-label"></label>
                 <div>
                     <div>
-                        <select id="Nationality" asp-for="Nationality" name="Nationality" asp-items="ViewBag.Nationality" class="form-control"></select>
+                        <select id="Nationality" asp-for="Nationality" name="Nationality" asp-items="ViewBag.Nationality"></select>
                     </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <Label class="control-label">Upload Your Mobility Coordinator Certificate:</Label>
-                <input class="form-control" type="file" name="file" />
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

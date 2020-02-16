@@ -8,6 +8,8 @@
 <h1>Details</h1>
 
 <div>
+    <h4>School</h4>
+    <hr />
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
@@ -33,24 +35,15 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Nationality.Name)
         </dd>
-        @if(Model.PhoneNumber != null) { 
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.PhoneNumber)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.PhoneNumber)
         </dd>
-        }
-        @if(Model.SchoolCoordinationId != null) { 
-        <dt class="col-sm-2">
-            Certificate
-        </dt>
-        <dd class="col-sm-10">
-            <a asp-controller="File" asp-action="DownloadFile" asp-route-id="@Model.CertificateId" class="label label-success">@Model.Certificate.FileName</a>
-        </dd>
-        }
     </dl>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
 </div>

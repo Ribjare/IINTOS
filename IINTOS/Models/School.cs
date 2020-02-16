@@ -36,8 +36,6 @@ namespace IINTOS.Models
         /// </summary>
         public string? Website { get; set; }
 
-        public bool Active { get; set; } = false;
-
 
         //--------------------- Foreign keys ------------------------
 
