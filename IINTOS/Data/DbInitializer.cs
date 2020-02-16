@@ -133,6 +133,7 @@ namespace IINTOS.Data
 
 				context.SaveChanges();
 			}
+
 			if ( /*NOT*/ !context.School.Any())
 			{
 				// Adds School for tests
@@ -173,7 +174,8 @@ namespace IINTOS.Data
 					EmailConfirmed = true,
 					About = "Admin default",
 					Active = true,
-					NationalityId = 1
+					NationalityId = 1,
+					SchoolId = 1
 				};
 				try
 				{
@@ -201,7 +203,8 @@ namespace IINTOS.Data
 					EmailConfirmed = true,
 					About = "Coordinator default",
 					Active = true,
-					NationalityId = 1
+					NationalityId = 1,
+					SchoolId = 2
 				};
 				try
 				{
