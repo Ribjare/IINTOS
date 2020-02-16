@@ -33,6 +33,7 @@ namespace IINTOS.Data
         public DbSet<Models.City> City { get; set; }
         public DbSet<Models.Country> Country { get; set; }
         public DbSet<Models.State> State { get; set; }
+        public DbSet<Models.UserFile> UserFile { get; set; }
 
 
 

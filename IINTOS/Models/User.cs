@@ -12,7 +12,7 @@ namespace IINTOS.Models
     /// User of the platform
     /// Can be in this roles: Coordinatior, Professor, IIntosCoordinatior, IINTOSProfessor, Admin
     /// </summary>
-    public class User: IdentityUser
+    public class User : IdentityUser
     {
         /// <summary>
         /// gets and sets Name of the user
@@ -28,7 +28,7 @@ namespace IINTOS.Models
         /// Get and sets the active property, 
         /// this is if is validated by system admin or the school cordinatior
         /// </summary>
-        public bool? Active { get; set; } = false;
+        public bool Active { get; set; } = false;
 
 
         //-------------- ForeignKey ----------
@@ -50,6 +50,9 @@ namespace IINTOS.Models
 
         public int? SchoolCoordinationId { get; set; }
 
+        [ForeignKey("UserFile")]
+        public int? CertificateId { get; set; }
+
         //--------------- Navigation Property --------------
 
         /// <summary>
@@ -64,5 +67,8 @@ namespace IINTOS.Models
         public School? School { get; set; }
 
         public School? SchoolCoordination { get; set; }
+
+        [Display(Name = "Certificate")]
+        public UserFile? Certificate { get; set; }
     }
 }

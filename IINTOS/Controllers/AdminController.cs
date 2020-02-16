@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using IINTOS.Data;
 using IINTOS.Models;
+using IINTOS.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -18,12 +20,14 @@ namespace IINTOS.Controllers
     {
         private readonly IINTOSContext _context;
         private readonly UserManager<User> _userManager;
+        private readonly EmailSender _emailSender;
 
-        public AdminController(IINTOSContext context, UserManager<User> userManager)
+
+        public AdminController(IINTOSContext context, UserManager<User> userManager, EmailSender emailSender)
         {
             _context = context;
             _userManager = userManager;
-
+            _emailSender = emailSender;
 
         }
 
@@ -100,22 +104,6 @@ namespace IINTOS.Controllers
         }
 
 
-        public async Task<IActionResult> Details(string? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var user = await _userManager.FindByIdAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            return View(user);
-        }
-
         ////////////////////////////////////////////////////////////////////////////////////////////////////
         /// <summary>   Action to approve a user. </summary>
         ///
@@ -136,10 +124,22 @@ namespace IINTOS.Controllers
             }
 
             user.Active = true;
+            if(await _userManager.IsInRoleAsync(user, "Coordinator"))
+            {
+                 _context.School.Where(p => p.Coordinator == user).FirstOrDefault();
+                user.SchoolCoordination.Active = true;
+            }
 
             await _userManager.UpdateAsync(user);
 
+            // Send the email with the link
+            var callbackUrl = Url.Page(
+                        "/");
+
+            var subject = $"You've been approved into IINTOS platform! <p>Get in to start explore this platform" +
+                $"<a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.</p>";
             //TODO Send some email
+            await _emailSender.SendEmailAsync(user.Email, "IINTOS - Approved", subject);
 
             if (User.IsInRole("Admin")){ 
                 return RedirectToAction(nameof(ListUsers));

@@ -120,8 +120,8 @@ namespace IINTOS.Data
             if ( /*NOT*/ !context.School.Any())
             {
                 // Adds School for tests
-                context.School.Add(new School { Name = "ESTStubal", Address = "Rua do IPS", Website = "https://www.estsetubal.ips.pt/", CountryId = 1 });
-                context.School.Add(new School { Name = "Palacký University Olomou", Address = "Křížkovského ", Website = "https://www.upol.cz/en/", CountryId = 2 });
+                context.School.Add(new School { Name = "ESTStubal", Address = "Rua do IPS", Website = "https://www.estsetubal.ips.pt/", CountryId = 1, Active=true });
+                context.School.Add(new School { Name = "Palacký University Olomou", Address = "Křížkovského ", Website = "https://www.upol.cz/en/", CountryId = 2, Active=true });
 
 
 

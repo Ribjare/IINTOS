@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using IINTOS.Data;
@@ -51,13 +52,34 @@ namespace IINTOS.Controllers
             return View();
         }
 
+
+        public async Task<IActionResult> Details(string? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var user = _context.User
+                .Include(p => p.Certificate)
+                .Where(p => p.Id.Equals(id)).FirstOrDefault(); //await _userManager.FindByIdAsync(id);
+
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return View(user);
+        }
+
         // GET: Registation/Create
         public ActionResult Create()
         {
 
             ViewBag.Nationality = new SelectList(_context.Country, "Id", "Name");
 
-            ViewBag.School = new SelectList(_context.School, "Id", "Name");
+            ViewBag.School = new SelectList(_context.School.Include(p=>p.Coordinator).Where(p=>p.Active), "Id", "Name");
            // Give the role of professor to this user
 
             return View();
@@ -79,14 +101,26 @@ namespace IINTOS.Controllers
         /// <returns>A action result, view for the index</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CreateCoordinator(CoordinatiorSchoolViewModel coordinatiorSchool)
+        public async Task<ActionResult> CreateCoordinator(CoordinatiorSchoolViewModel coordinatiorSchool, IFormFile file)
         {
             var user = new User();
             try
             {
-                if (ModelState.IsValid)
+                if (ModelState.IsValid && file != null)
                 {
+                    byte[] bytes;
+                    using (var stream = new BinaryReader(file.OpenReadStream()))
+                    {
+                        bytes = stream.ReadBytes(Convert.ToInt32(file.Length));
+                    }
 
+                    var userFile = new UserFile
+                    {
+                        Content = bytes,
+                        FileName = file.FileName,
+                        ContentType = file.ContentType,
+                        FileType = FileType.Certificate
+                    };
                     //Create an user object
                     user = new User
                     {
@@ -97,6 +131,7 @@ namespace IINTOS.Controllers
                         PhoneNumber = coordinatiorSchool.PhoneNumber,
                         Active = false,
                         NationalityId = coordinatiorSchool.Nationality,
+                        Certificate=userFile
                     };
 
                     //Creating the user in the bd
@@ -292,7 +327,8 @@ namespace IINTOS.Controllers
                         Name = userModel.Name,
                         UserName = userModel.Email,
                         Email = userModel.Email,
-                        NationalityId = userModel.Nationality
+                        NationalityId = userModel.Nationality,
+                        Active = true
                     };
 
                     //Creating the user in the bd
@@ -310,6 +346,10 @@ namespace IINTOS.Controllers
                             "<p>Please change you password when you first login.</p>";
                         await _emailSender.SendEmailAsync(user.Email, subject, body);
 
+                        ViewData["_alert.type"] = "success";
+                        ViewData["_alert.title"] = "Sucesso!";
+                        ViewData["_alert.body"] = "Utilizador Criado";
+
                         //Shows the list of IINTOS Users
                         return RedirectToAction("ListUsers", "Admin");
                     }
@@ -320,7 +360,7 @@ namespace IINTOS.Controllers
                         ViewData["_alert.body"] = ". Id:T002";
                     }
 
-                    return RedirectToAction(nameof(CreateIINTOSProfessor));
+                    return View();
                 }
                 else
                 {
@@ -332,6 +372,7 @@ namespace IINTOS.Controllers
                 ViewData["_alert.type"] = "error";
                 ViewData["_alert.title"] = "Erro";
                 ViewData["_alert.body"] = ". Id:T002";
+
                 //saida default
                 return RedirectToAction(nameof(CreateIINTOSProfessor));
             }
