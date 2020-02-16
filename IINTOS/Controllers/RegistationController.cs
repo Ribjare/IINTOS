@@ -142,8 +142,17 @@ namespace IINTOS.Controllers
                         await _userManager.AddToRoleAsync(user, "Coordinator");
 
                         await _context.SaveChangesAsync();
-                        //
+
                         //TODO: Send email to admin
+
+                        var adminList = await _userManager.GetUsersInRoleAsync("Admin");
+
+                        foreach (var userAux in adminList)
+                        {
+                           await _emailSender.SendEmailAsync(userAux.Email, "IINTOS - Coordinatior Request", "<p>A new Coordinator have requested to join the platform.</p>" +
+                                "<p> Go and check it out!</p>");
+                        }
+
 
                         return RedirectToAction("Create", "Schools", new { area = "", coordinator = user.Email});
                     }

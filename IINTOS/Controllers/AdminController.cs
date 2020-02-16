@@ -138,6 +138,7 @@ namespace IINTOS.Controllers
 
             var subject = $"You've been approved into IINTOS platform! <p>Get in to start explore this platform" +
                 $"<a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.</p>";
+
             //TODO Send some email
             await _emailSender.SendEmailAsync(user.Email, "IINTOS - Approved", subject);
 
