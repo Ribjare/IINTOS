@@ -23,6 +23,7 @@ namespace IINTOS.Controllers
         private readonly EmailSender _emailSender;
         private readonly UserManager<User> _userManager;
         private readonly IServiceProvider _serviceProvider;
+        private string DefaultPassword = "123456";
 
         public RegistationController(IINTOSContext context, UserManager<User> userManager, EmailSender emailSender, IServiceProvider serviceProvider)
         {
@@ -54,7 +55,7 @@ namespace IINTOS.Controllers
         public ActionResult Create()
         {
 
-            ViewBag.Nationality = new SelectList(_context.Nationality, "Id", "Name");
+            ViewBag.Nationality = new SelectList(_context.Country, "Id", "Name");
 
             ViewBag.School = new SelectList(_context.School, "Id", "Name");
            // Give the role of professor to this user
@@ -65,8 +66,7 @@ namespace IINTOS.Controllers
         // GET: Registation/Create
         public ActionResult CreateCoordinator()
         {
-
-            ViewBag.Nationality = new SelectList(_context.Nationality, "Id", "Name");
+            ViewBag.Nationality = new SelectList(_context.Country, "Id", "Name");
 
             return View();
         }
@@ -191,13 +191,16 @@ namespace IINTOS.Controllers
 
         public ActionResult CreateIINTOSProfessor()
         {
+            ViewBag.Nationality = new SelectList(_context.Country, "Id", "Name");
+
+
             return View();
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CreateIINTOSProfessor(UserCreateViewModel userViewModel)
+        public async Task<ActionResult> CreateIINTOSProfessor(IINTOSProfessorViewModel userViewModel)
         {
             try
             {
@@ -209,31 +212,33 @@ namespace IINTOS.Controllers
                         Name = userViewModel.Name,
                         UserName = userViewModel.Email,
                         Email = userViewModel.Email,
-                        About = userViewModel.About,
-                        PhoneNumber = userViewModel.PhoneNumber,
-                        Active = false,
-                        NationalityId = userViewModel.Nationality,
-                        SchoolId = userViewModel.School
+                        NationalityId=userViewModel.Nationality
                     };
-                    var school = await _context.School
-                        .Include(p => p.Professors)
-                        .Include(p => p.Coordinator)
-                        .FirstOrDefaultAsync(p => p.Id == userViewModel.School);
-
-                    school.Professors.Add(user);
 
                     //Creating the user in the bd
-                    var result = await _userManager.CreateAsync(user, userViewModel.Password);
+                    var result = await _userManager.CreateAsync(user, "123456");
                     if (result.Succeeded)
                     {
                         await _userManager.AddToRoleAsync(user, "IINTOS-Professor");
-                        // _logger.LogInformation("User created a new account with password.");
-                        _context.Update(school);
 
-                        //TODO Send email to coordinator
-                        return RedirectToAction(nameof(Index));
+                        // _logger.LogInformation("User created a new account with password.");
+
+                        //TODO Send email to professor
+                        var subject = "IINTOS";
+                        var body = "You got register into the IINTOS platform! Please change you password when you first login.";
+                        await _emailSender.SendEmailAsync(user.Email, subject, body);
+                        
+                        //Shows the list of IINTOS Users
+                        return RedirectToAction("ListUsers", "IINTOS");
                     }
-                    return View();
+                    else
+                    {
+                        ViewData["_alert.type"] = "error";
+                        ViewData["_alert.title"] = "Erro";
+                        ViewData["_alert.body"] = ". Id:T002";
+                    }
+
+                    return RedirectToAction(nameof(CreateIINTOSProfessor));
                 }
                 else
                 {
@@ -242,9 +247,11 @@ namespace IINTOS.Controllers
                     ViewData["_alert.body"] = ". Id:T002";
 
                 }
-
+                ViewData["_alert.type"] = "error";
+                ViewData["_alert.title"] = "Erro";
+                ViewData["_alert.body"] = ". Id:T002";
                 //saida default
-                return Create();
+                return RedirectToAction(nameof(CreateIINTOSProfessor));
             }
             catch (Exception e)
             {
@@ -252,6 +259,87 @@ namespace IINTOS.Controllers
             }
         }
 
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// <summary>   Admin create user. Allows the admin to create any type of user </summary>
+        ///
+        /// <remarks>   Daniel Alves, 15/02/2020. </remarks>
+        ///
+        /// <returns>   A response stream to send to the AdminCreateUser View. </returns>
+        ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        public ActionResult AdminCreateUser()
+        {
+            // Pode associa-lo a uma escola ja existente
+            // IINTOS: a escola nao precisa ser verificada
+            
+            ViewBag.Roles = new SelectList(_context.Roles, "Name", "Name");
+            ViewBag.Nationality = new SelectList(_context.Country, "Id", "Name");
+
+
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> AdminCreateUser(GenericUserViewModel userModel)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    // 
+                    var user = new User
+                    {
+                        Name = userModel.Name,
+                        UserName = userModel.Email,
+                        Email = userModel.Email,
+                        NationalityId = userModel.Nationality
+                    };
+
+                    //Creating the user in the bd
+                    var result = await _userManager.CreateAsync(user, "123456");
+                    if (result.Succeeded)
+                    {
+                        await _userManager.AddToRoleAsync(user, userModel.Roles);
+
+                        // _logger.LogInformation("User created a new account with password.");
+
+                        //TODO Send email to professor
+                        var subject = "IINTOS";
+                        var body = $"You got register into the IINTOS platform! <p>Your username is:{user.UserName}" +
+
+                            "<p>Please change you password when you first login.</p>";
+                        await _emailSender.SendEmailAsync(user.Email, subject, body);
+
+                        //Shows the list of IINTOS Users
+                        return RedirectToAction("ListUsers", "Admin");
+                    }
+                    else
+                    {
+                        ViewData["_alert.type"] = "error";
+                        ViewData["_alert.title"] = "Erro";
+                        ViewData["_alert.body"] = ". Id:T002";
+                    }
+
+                    return RedirectToAction(nameof(CreateIINTOSProfessor));
+                }
+                else
+                {
+                    ViewData["_alert.type"] = "error";
+                    ViewData["_alert.title"] = "Erro";
+                    ViewData["_alert.body"] = ". Id:T002";
+
+                }
+                ViewData["_alert.type"] = "error";
+                ViewData["_alert.title"] = "Erro";
+                ViewData["_alert.body"] = ". Id:T002";
+                //saida default
+                return RedirectToAction(nameof(CreateIINTOSProfessor));
+            }
+            catch (Exception e)
+            {
+                return Create();
+            }
+        }
 
 
     }

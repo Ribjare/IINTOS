@@ -14,10 +14,7 @@ namespace IINTOS.Data
     {
         private class CountryJson
         {
-            public int Id { get; set; }
-            public string iso2 { get; set; }
             public string name { get; set; }
-            public string phone_code { get; set; }
 
         }
         private class StateJson
@@ -41,7 +38,7 @@ namespace IINTOS.Data
             if ( /*NOT*/ !context.Country.Any())
             {
 
-                using (StreamReader r = new StreamReader("raw/countries.json"))
+                using (StreamReader r = new StreamReader("Raw/countries.json"))
                 {
                     string json = r.ReadToEnd();
                     List<CountryJson> items = JsonConvert.DeserializeObject<List<CountryJson>>(json);
@@ -51,7 +48,6 @@ namespace IINTOS.Data
                         var newCountry = new Country
                         {
                             Name = x.name,
-                            PhoneCode = x.phone_code,
                         };
 
                         context.Add(newCountry);
@@ -113,17 +109,6 @@ namespace IINTOS.Data
 
                 context.SaveChanges();
             }*/
-            if ( /*NOT*/ !context.Nationality.Any())
-            {
-                // Adds Country dor tests
-                context.Nationality.Add(new Nationality { Name = "Portuguese" });
-                context.Nationality.Add(new Nationality { Name = "Italian" });
-                context.Nationality.Add(new Nationality { Name = "Czech" });
-
-
-                context.SaveChanges();
-            }
-
             if ( /*NOT*/ !context.Language.Any())
             {
                 // Adds Languages for tests

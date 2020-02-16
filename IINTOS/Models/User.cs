@@ -55,7 +55,7 @@ namespace IINTOS.Models
         /// <summary>
         /// Navigation Property for the nationality
         /// </summary>
-        public Nationality Nationality { get; set; }
+        public Country Nationality { get; set; }
 
     
         /// <summary>
