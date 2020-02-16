@@ -203,9 +203,11 @@ namespace IINTOS
 		}
 
 		// GET: Project/Activity/5
-		public IActionResult Activity()
+		public async Task<IActionResult> Activity(int? id)
 		{
-			return View();
+
+			return View(await _context.Activity
+					.ToListAsync());
 		}
 
 
@@ -216,6 +218,8 @@ namespace IINTOS
 		[ValidateAntiForgeryToken]
 		public async Task<IActionResult> CreateActivity([Bind("Title,Description")] Activity activity)
 		{
+			Console.WriteLine("SchoolId is NULL");
+
 			if (ModelState.IsValid)
 			{
 				_context.Add(activity);
