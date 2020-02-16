@@ -14,10 +14,7 @@ namespace IINTOS.Data
     {
         private class CountryJson
         {
-            public int Id { get; set; }
-            public string iso2 { get; set; }
             public string name { get; set; }
-            public string phone_code { get; set; }
 
         }
         private class StateJson
@@ -41,7 +38,7 @@ namespace IINTOS.Data
             if ( /*NOT*/ !context.Country.Any())
             {
 
-                using (StreamReader r = new StreamReader("raw/countries.json"))
+                using (StreamReader r = new StreamReader("Raw/countries.json"))
                 {
                     string json = r.ReadToEnd();
                     List<CountryJson> items = JsonConvert.DeserializeObject<List<CountryJson>>(json);
@@ -51,7 +48,6 @@ namespace IINTOS.Data
                         var newCountry = new Country
                         {
                             Name = x.name,
-                            PhoneCode = x.phone_code,
                         };
 
                         context.Add(newCountry);
@@ -113,17 +109,6 @@ namespace IINTOS.Data
 
                 context.SaveChanges();
             }*/
-            if ( /*NOT*/ !context.Nationality.Any())
-            {
-                // Adds Country dor tests
-                context.Nationality.Add(new Nationality { Name = "Portuguese" });
-                context.Nationality.Add(new Nationality { Name = "Italian" });
-                context.Nationality.Add(new Nationality { Name = "Czech" });
-
-
-                context.SaveChanges();
-            }
-
             if ( /*NOT*/ !context.Language.Any())
             {
                 // Adds Languages for tests
@@ -135,8 +120,8 @@ namespace IINTOS.Data
             if ( /*NOT*/ !context.School.Any())
             {
                 // Adds School for tests
-                context.School.Add(new School { Name = "ESTStubal", Address = "Rua do IPS", Website = "https://www.estsetubal.ips.pt/", CountryId = 1 });
-                context.School.Add(new School { Name = "Palacký University Olomou", Address = "Křížkovského ", Website = "https://www.upol.cz/en/", CountryId = 2 });
+                context.School.Add(new School { Name = "ESTStubal", Address = "Rua do IPS", Website = "https://www.estsetubal.ips.pt/", CountryId = 1, Active=true });
+                context.School.Add(new School { Name = "Palacký University Olomou", Address = "Křížkovského ", Website = "https://www.upol.cz/en/", CountryId = 2, Active=true });
 
 
 
@@ -164,6 +149,7 @@ namespace IINTOS.Data
             }
             if (!context.Users.Any())
             {
+                // Admin
                 User defaultUser = new User
                 {
                     Name = "Admin Zé",
@@ -174,14 +160,33 @@ namespace IINTOS.Data
                     Active = true,
                     NationalityId = 1
                 };
+
+
+                // Coordenador IINTOS
+                User coordenadorIINTOS = new User
+                {
+                    Name = "Coordenador Anturio",
+                    UserName = "iceptalves@gmail.com",
+                    Email = "iceptalves@gmail.com",
+                    EmailConfirmed = true,
+                    About = "Coordenador IINTOS default",
+                    Active = true,
+                    NationalityId = 1
+                };
+
+
                 try
                 {
                     var result = await userManager.CreateAsync(defaultUser, "123456");
+                    var result2 = await userManager.CreateAsync(coordenadorIINTOS, "123456");
 
-                    if (result.Succeeded)
+                    if (result.Succeeded && result2.Succeeded)
                     {
                         //await userManager.AddToRoleAsync(defaultUser, "Coordinator");
                         await userManager.AddToRoleAsync(defaultUser, "Admin");
+
+                        await userManager.AddToRoleAsync(coordenadorIINTOS, "IINTOS-Coordinator");
+
 
                     }
                     context.SaveChanges();

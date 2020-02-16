@@ -21,17 +21,14 @@
     <tbody>
         @foreach (User user in Model.Keys)
         {
-
-
-
-            <tr>
+         <tr>
 
                 <td scope="row">@Model.GetValueOrDefault(user)</td>
                 <td>@user.Name</td>
                 <td>@user.Email</td>
                 <td>@user.Active</td>
-                <td><a class="btn btn-info" asp-controller="Registation" asp-action="Details" asp-route-id="@user.Id">Details</a></td>
-                <td><a class="btn btn-info" asp-controller="Registation" asp-action="EditUser" asp-route-id="@user.Id">Edit</a></td>
+                <td><a class="btn btn-info" asp-action="Details" asp-route-id="@user.Id">Details</a></td>
+                <td><a class="btn btn-info" asp-action="EditUser" asp-route-id="@user.Id">Edit</a></td>
                 @if (!user.Email.Equals("iintosdev@hotmail.com"))
                 {
                     <td><a class="btn btn-danger" asp-action="DeleteAction" asp-route-id="@user.Id">Delete</a></td>
