@@ -158,20 +158,22 @@ namespace IINTOS.Data
                     EmailConfirmed = true,
                     About = "Admin default",
                     Active = true,
-                    NationalityId = 1
+                    NationalityId = 1,
+                    SchoolId = 1
                 };
 
 
-                // Coordenador IINTOS
-                User coordenadorIINTOS = new User
-                {
-                    Name = "Coordenador Anturio",
-                    UserName = "iceptalves@gmail.com",
-                    Email = "iceptalves@gmail.com",
-                    EmailConfirmed = true,
-                    About = "Coordenador IINTOS default",
-                    Active = true,
-                    NationalityId = 1
+            // Coordenador IINTOS
+            User coordenadorIINTOS = new User
+            {
+                Name = "Coordenador Anturio",
+                UserName = "iceptalves@gmail.com",
+                Email = "iceptalves@gmail.com",
+                EmailConfirmed = true,
+                About = "Coordenador IINTOS default",
+                Active = true,
+                NationalityId = 1,
+                SchoolId = 1
                 };
 
 
@@ -194,7 +196,7 @@ namespace IINTOS.Data
                 }
                 catch (Exception e)
                 {
-
+                    Console.WriteLine(e);
 
                 }
             }
