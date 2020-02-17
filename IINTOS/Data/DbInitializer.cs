@@ -133,6 +133,7 @@ namespace IINTOS.Data
 
 				context.SaveChanges();
 			}
+
 			if ( /*NOT*/ !context.School.Any())
 			{
 				// Adds School for tests
@@ -173,7 +174,8 @@ namespace IINTOS.Data
 					EmailConfirmed = true,
 					About = "Admin default",
 					Active = true,
-					NationalityId = 1
+					NationalityId = 1,
+					SchoolId = 1
 				};
 				try
 				{
@@ -201,7 +203,8 @@ namespace IINTOS.Data
 					EmailConfirmed = true,
 					About = "Coordinator default",
 					Active = true,
-					NationalityId = 1
+					NationalityId = 1,
+					SchoolId = 2
 				};
 				try
 				{
@@ -222,7 +225,31 @@ namespace IINTOS.Data
 			}
 
 
+
+			if (!context.Project.Any())
+			{
+				context.Project.Add(new Project { Goal = "GOAL PROJECT", Description = "DESCRIPTION PROJECT", Links = "https://www.upol.cz/en/", TargetAudience = "20 years", Type = "Presential" });
+				context.SaveChanges();
+			}
+
+			if (!context.SchoolProject.Any())
+			{
+
+				context.SchoolProject.Add(new SchoolProject(1, 2));
+				context.SaveChanges();
+			}
+
+			if (!context.Activity.Any())
+			{
+				context.Activity.Add(new Activity { Title = "ACTIVITY 1", Description = "DESCRIPTION ACTIVITY 1", ProjectID = 1 });
+				context.Activity.Add(new Activity { Title = "ACTIVITY 2", Description = "DESCRIPTION ACTIVITY 2", ProjectID = 1 });
+				context.Activity.Add(new Activity { Title = "ACTIVITY 3", Description = "DESCRIPTION ACTIVITY 3", ProjectID = 1 });
+				context.Activity.Add(new Activity { Title = "ACTIVITY 4", Description = "DESCRIPTION ACTIVITY 4", ProjectID = 1 });
+
+				context.SaveChanges();
+			}
 		}
+
 
 		private static async Task CreateRole(string role, IServiceProvider serviceProvider)
 		{
