@@ -1,0 +1,57 @@
+@model IEnumerable<School>
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    string? coordinatorId = ViewBag.Coordinator;
+}
+
+    <div>
+        <h4>Project</h4>
+        <hr />
+
+        <div>
+          <div class="row">
+            <div class="col-4">
+              <div class="list-group" id="list-tab" role="tablist">
+                <a asp-action="Details" asp-route-id=@ViewContext.RouteData.Values["id"] class="list-group-item list-group-item-action">Project</a>
+                <a class="list-group-item list-group-item-action active" id="list-settings-list" data-toggle="list" href="#list-schools" role="tab" aria-controls="schools">Schools</a>
+                <a asp-action="Activity" asp-route-id=@ViewContext.RouteData.Values["id"] class="list-group-item list-group-item-action">Activities</a>
+              </div>
+            </div>
+            <div class="col-8">
+              <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="list-schools" role="tabpanel" aria-labelledby="list-schools-list">
+                    @foreach (var item in Model)
+                        {
+                        <ul class="list-group">
+                          <li class="list-group-item"><b>@Html.DisplayNameFor(model => model.Name): </b>  @Html.DisplayFor(modelItem => item.Name)</li>
+                          <li class="list-group-item"><b>@Html.DisplayNameFor(model => model.Address): </b>  @Html.DisplayFor(modelItem => item.Address)</li>
+                          <li class="list-group-item"><b>@Html.DisplayNameFor(model => model.Website): </b>  @Html.DisplayFor(modelItem => item.Website)</li>
+                          <li class="list-group-item"><b>@Html.DisplayNameFor(model => model.Coordinator): </b>  @Html.DisplayFor(modelItem => item.Coordinator)</li>
+                        </ul>
+                        <br>
+                        }
+                  @if (@Model.LongCount() == 1) {
+                      <form asp-action="CreateSchoolProject">
+                        <div class="form-group">
+                            <label class="control-label"><b>Select a partner:</b></label>
+                              <select class="form-control">
+                                  <option value="XXXX">Palacký University Olomou</option>
+                                  <option value="XXXX">Palacký University </option>
+                                  <option value="XXXX">Palacký </option>
+                              </select>
+                            <span class="text-danger"></span>
+                        </div>
+                      </form>
+                  }
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+<div>
+</div>

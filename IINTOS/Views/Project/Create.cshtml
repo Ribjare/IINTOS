@@ -3,8 +3,6 @@
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
-
-    string? coordinatorId = ViewBag.Coordinator;
 }
 
 <h4>Project</h4>
@@ -46,10 +44,6 @@
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
