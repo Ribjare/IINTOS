@@ -65,6 +65,7 @@ namespace IINTOS.Controllers
         {
             return View();
         }
+        //Partners pages -----------------
 
         public IActionResult IpsPage()
         {
@@ -74,6 +75,17 @@ namespace IINTOS.Controllers
         {
             return View();
         }
+
+        public IActionResult SaramagoPage()
+        {
+            return View();
+        }
+
+        public IActionResult VallauriPage()
+        {
+            return View();
+        }
+
 
         private async Task c()
         {

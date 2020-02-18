@@ -29,7 +29,7 @@
                     <td>@user.Name</td>
                     <td>@user.Email</td>
                     <td>@user.Active</td>
-                    <td><a class="btn btn-info" asp-action="Details" asp-route-id="@user.Id">Details</a></td>
+                    <td><a class="btn btn-info" asp-controller="Registation" asp-action="Details" asp-route-id="@user.Id">Details</a></td>
                     <td><a class="btn btn-success" asp-action="ApproveAction" asp-route-id="@user.Id">Approve</a></td>
                     <td><form method="post" action="DeleteConfirmUser"> <input type="hidden" name="userIdentification" value="@user.Id" /><input type="submit" class="btn btn-danger" value="Delete" /></form></td>
 

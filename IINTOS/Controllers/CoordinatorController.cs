@@ -57,7 +57,7 @@ namespace IINTOS.Controllers
             var aux = _context.School.Where(p => p.Id == thisUser.SchoolId).FirstOrDefault();
 
             ViewBag.School = thisUser.School;
-            ViewBag.Nationality = new SelectList(_context.Nationality, "Id", "Name");
+            ViewBag.Nationality = new SelectList(_context.Country, "Id", "Name");
 
 
             return View();
