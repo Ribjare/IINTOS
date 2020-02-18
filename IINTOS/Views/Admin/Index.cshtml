@@ -5,16 +5,24 @@
 }
 
 <h1>Admin Panel</h1>
-<br />
-<a asp-action="ListUsers" class="btn btn-light">All Users</a>
-<br />
-<br />
-<a asp-action="ApproveUser" class="btn btn-light">Approve Coordinator</a>
-<br />
-<br />
-<a asp-controller="Schools" asp-action="Index" class="btn btn-light">View Schools</a>
-<br />
-<br />
-<a asp-controller="Registation" asp-action="AdminCreateUser" class="btn btn-light">Create new User</a>
-<br />
-
+@if (User.IsInRole("Admin"))
+{
+    <br />
+    <a asp-action="ListUsers" class="btn btn-light">All Users</a>
+    <br />
+    <br />
+    <a asp-action="ApproveUser" class="btn btn-light">Approve Coordinator</a>
+    <br />
+    <br />
+    <a asp-controller="Schools" asp-action="Index" class="btn btn-light">View Schools</a>
+    <br />
+    <br />
+    <a asp-controller="Registation" asp-action="AdminCreateUser" class="btn btn-light">Create new User</a>
+    <br />
+}
+@if (User.IsInRole("Mobility-Admin"))
+{
+    <br />
+    <a asp-action="ApproveCoordinator" class="btn btn-light">Approve Coordinator</a>
+    <br />
+}

@@ -15,7 +15,7 @@ namespace IINTOS.Controllers
     /// <summary>
     /// Controler for the admins
     /// </summary>
-    [Authorize(Roles = "Admin,Coordinator")]
+    [Authorize(Roles = "Admin,Coordinator,Mobility-Admin")]
     public class AdminController : Controller
     {
         private readonly IINTOSContext _context;
@@ -31,7 +31,7 @@ namespace IINTOS.Controllers
 
         }
 
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Mobility-Admin")]
 
         public IActionResult Index()
         {
@@ -103,6 +103,24 @@ namespace IINTOS.Controllers
             return View(list);
         }
 
+        public async Task<IActionResult> ApproveCoordinator()
+        {
+            Dictionary<User, string> list = new Dictionary<User, string>();
+
+
+            foreach (User user in _userManager.Users.Where(p => p.Active == false).ToList())
+            {
+                List<string> roles = new List<string>(await _userManager.GetRolesAsync(user));
+
+                if (await _userManager.IsInRoleAsync(user, "Mobility-Admin"))
+                    list.Add(user, roles[0]);
+
+            }
+
+            return View("ApproveUser", list);
+        }
+
+
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////
         /// <summary>   Action to approve a user. </summary>
@@ -124,9 +142,9 @@ namespace IINTOS.Controllers
             }
 
             user.Active = true;
-            if(await _userManager.IsInRoleAsync(user, "Coordinator"))
+            if (await _userManager.IsInRoleAsync(user, "Coordinator"))
             {
-                 //_context.School.Where(p => p.Coordinator == user).FirstOrDefault();
+                //_context.School.Where(p => p.Coordinator == user).FirstOrDefault();
                 //user.SchoolCoordination.Active = true;
             }
 
@@ -142,12 +160,19 @@ namespace IINTOS.Controllers
             //TODO Send some email
             await _emailSender.SendEmailAsync(user.Email, "IINTOS - Approved", subject);
 
-            if (User.IsInRole("Admin")){ 
+            if (User.IsInRole("Admin"))
+            {
                 return RedirectToAction(nameof(ListUsers));
             }
             //if (User.IsInRole("Coordinator")){
-                return RedirectToAction("ProfessorList", "Coordinator");
+            return RedirectToAction("ProfessorList", "Coordinator");
             //}
+        }
+
+        public IActionResult DeleteView(string id)
+        {
+            ViewBag.Id = id;
+            return View();
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -159,6 +184,29 @@ namespace IINTOS.Controllers
         ///
         /// <returns>   An asynchronous result that yields an IActionResult. </returns>
         ////////////////////////////////////////////////////////////////////////////////////////////////////
+        [HttpPost]
+        public async Task<IActionResult> DeleteAction(string id, string removeText)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+            var subject = "<p>Your application to the IINTOS platform got rejected because :</p>";
+            subject += $"<p>{removeText}</p>";
+            subject += "<p>Thanks</p>";
+
+            await _emailSender.SendEmailAsync(user.Email, "IINTOS - Rejected", subject);
+
+            await _userManager.DeleteAsync(user);
+
+            //TODO Send some email
+
+            return RedirectToAction(nameof(ApproveUser));
+        }
+
+        [HttpPost]
         public async Task<IActionResult> DeleteAction(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
@@ -172,7 +220,7 @@ namespace IINTOS.Controllers
 
             //TODO Send some email
 
-            return RedirectToAction(nameof(ListUsers));
+            return RedirectToAction(nameof(ApproveUser));
         }
     }
 }

@@ -135,6 +135,7 @@ namespace IINTOS.Data
                 await CreateRole("Admin", serviceProvider);
 
                 //Mobility Area
+                await CreateRole("Mobility-Admin", serviceProvider);
                 await CreateRole("Coordinator", serviceProvider);
                 await CreateRole("Professor", serviceProvider);
                 await CreateRole("Guest-Professor", serviceProvider);
@@ -199,6 +200,8 @@ namespace IINTOS.Data
 					NationalityId = 1,
 					SchoolId = 1
 				};
+
+
 				try
 				{
 					var result = await userManager.CreateAsync(defaultUser, "123456");
