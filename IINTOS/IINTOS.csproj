@@ -16,6 +16,8 @@
     <Compile Remove="Migrations\20200119004723_initial1.Designer.cs" />
     <Compile Remove="Migrations\20200119105357_customUserData.cs" />
     <Compile Remove="Migrations\20200119105357_customUserData.Designer.cs" />
+    <Compile Remove="Models\EmptyCSharpFile.cs" />
+    <Compile Remove="Controllers\SchoolProjectController.cs" />
   </ItemGroup>
 
 
@@ -31,4 +33,11 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Remove="Views\SchoolProject\Create.cshtml" />
+    <Content Remove="Views\SchoolProject\Edit.cshtml" />
+    <Content Remove="Views\SchoolProject\Details.cshtml" />
+    <Content Remove="Views\SchoolProject\Delete.cshtml" />
+    <Content Remove="Views\SchoolProject\Index.cshtml" />
+  </ItemGroup>
 </Project>

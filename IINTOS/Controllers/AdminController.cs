@@ -126,8 +126,8 @@ namespace IINTOS.Controllers
             user.Active = true;
             if(await _userManager.IsInRoleAsync(user, "Coordinator"))
             {
-                 _context.School.Where(p => p.Coordinator == user).FirstOrDefault();
-                user.SchoolCoordination.Active = true;
+                 //_context.School.Where(p => p.Coordinator == user).FirstOrDefault();
+                //user.SchoolCoordination.Active = true;
             }
 
             await _userManager.UpdateAsync(user);

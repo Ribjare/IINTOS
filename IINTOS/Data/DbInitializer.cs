@@ -162,6 +162,8 @@ namespace IINTOS.Data
                     SchoolId = 1
                 };
 
+				//System admin
+				await CreateRole("Admin", serviceProvider);
 
             // Coordenador IINTOS
             User coordenadorIINTOS = new User
@@ -176,22 +178,40 @@ namespace IINTOS.Data
                 SchoolId = 1
                 };
 
+				//IINTOS Area
+				//IINTOS-Coordinator
+				await CreateRole("IINTOS-Coordinator", serviceProvider);
+				//IINTOS-Professor
+				await CreateRole("IINTOS-Professor", serviceProvider);
+				context.SaveChanges();
 
-                try
-                {
-                    var result = await userManager.CreateAsync(defaultUser, "123456");
-                    var result2 = await userManager.CreateAsync(coordenadorIINTOS, "123456");
+			}
+			if (!context.Users.Any())
+			{
+				User defaultUser = new User
+				{
+					Name = "Admin Zé",
+					UserName = "iintosdev@hotmail.com",
+					Email = "iintosdev@hotmail.com",
+					EmailConfirmed = true,
+					About = "Admin default",
+					Active = true,
+					NationalityId = 1,
+					SchoolId = 1
+				};
+				try
+				{
+					var result = await userManager.CreateAsync(defaultUser, "123456");
 
-                    if (result.Succeeded && result2.Succeeded)
-                    {
-                        //await userManager.AddToRoleAsync(defaultUser, "Coordinator");
-                        await userManager.AddToRoleAsync(defaultUser, "Admin");
+					if (result.Succeeded)
+					{
+						//await userManager.AddToRoleAsync(defaultUser, "Coordinator");
+						await userManager.AddToRoleAsync(defaultUser, "Admin");
 
-                        await userManager.AddToRoleAsync(coordenadorIINTOS, "IINTOS-Coordinator");
+					}
+					context.SaveChanges();
 
 
-                    }
-                    context.SaveChanges();
 
                 }
                 catch (Exception e)
@@ -199,21 +219,45 @@ namespace IINTOS.Data
                     Console.WriteLine(e);
 
                 }
+
+                if (!context.Project.Any())
+                {
+                    context.Project.Add(new Project { Goal = "GOAL PROJECT", Description = "DESCRIPTION PROJECT", Links = "https://www.upol.cz/en/", TargetAudience = "20 years", Type = "Presential" });
+                    context.SaveChanges();
+                }
+
+                if (!context.SchoolProject.Any())
+                {
+
+                    context.SchoolProject.Add(new SchoolProject(1, 2));
+                    context.SaveChanges();
+                }
+
+                if (!context.Activity.Any())
+                {
+                    context.Activity.Add(new Activity { Title = "ACTIVITY 1", Description = "DESCRIPTION ACTIVITY 1", ProjectID = 1 });
+                    context.Activity.Add(new Activity { Title = "ACTIVITY 2", Description = "DESCRIPTION ACTIVITY 2", ProjectID = 1 });
+                    context.Activity.Add(new Activity { Title = "ACTIVITY 3", Description = "DESCRIPTION ACTIVITY 3", ProjectID = 1 });
+                    context.Activity.Add(new Activity { Title = "ACTIVITY 4", Description = "DESCRIPTION ACTIVITY 4", ProjectID = 1 });
+
+                    context.SaveChanges();
+                }
+
             }
 
+		}
 
-        }
 
-        private static async Task CreateRole(string role, IServiceProvider serviceProvider)
-        {
-            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            var roleCheck = await roleManager.RoleExistsAsync(role);
-            if (!roleCheck)
-            {
-                //create the roles and seed them to the database
-                await roleManager.CreateAsync(new IdentityRole(role));
-            }
-        }
+		private static async Task CreateRole(string role, IServiceProvider serviceProvider)
+		{
+			var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+			var roleCheck = await roleManager.RoleExistsAsync(role);
+			if (!roleCheck)
+			{
+				//create the roles and seed them to the database
+				await roleManager.CreateAsync(new IdentityRole(role));
+			}
+		}
 
-    }
+	}
 }

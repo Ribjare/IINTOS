@@ -1,0 +1,42 @@
+@model IINTOS.Models.Project
+
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    string? coordinatorId = ViewBag.Coordinator;
+}
+
+    <div>
+        <h4>Project</h4>
+        <hr />
+
+        <div>
+          <div class="row">
+            <div class="col-4">
+              <div class="list-group" id="list-tab" role="tablist">
+                <a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">Project</a>
+                <a asp-action="SchoolProject" asp-route-id=@ViewContext.RouteData.Values["id"] class="list-group-item list-group-item-action">Schools</a>
+                <a asp-action="Activity" asp-route-id=@ViewContext.RouteData.Values["id"] class="list-group-item list-group-item-action">Activities</a>
+              </div>
+            </div>
+            <div class="col-8">
+              <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
+                    <ul class="list-group">
+                      <li class="list-group-item"><b>@Html.DisplayNameFor(model => model.Goal): </b>  @Html.DisplayFor(model => model.Goal)</li>
+                      <li class="list-group-item"><b>@Html.DisplayNameFor(model => model.Description): </b>  @Html.DisplayFor(model => model.Description)</li>
+                      <li class="list-group-item"><b>@Html.DisplayNameFor(model => model.Links): </b>  @Html.DisplayFor(model => model.Links)</li>
+                      <li class="list-group-item"><b>@Html.DisplayNameFor(model => model.TargetAudience): </b>  @Html.DisplayFor(model => model.TargetAudience)</li>
+                      <li class="list-group-item"><b>@Html.DisplayNameFor(model => model.Type): </b>  @Html.DisplayFor(model => model.Type)</li>
+                    </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+<div>
+    @* <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> | *@
+</div>

@@ -79,8 +79,8 @@ namespace IINTOS.Controllers
 
             ViewBag.Nationality = new SelectList(_context.Country, "Id", "Name");
 
-            ViewBag.School = new SelectList(_context.School.Include(p=>p.Coordinator).Where(p=>p.Active), "Id", "Name");
-           // Give the role of professor to this user
+            ViewBag.School = new SelectList(_context.School.Include(p => p.Coordinator).Where(p => p.Active), "Id", "Name");
+            // Give the role of professor to this user
 
             return View();
         }
@@ -131,7 +131,8 @@ namespace IINTOS.Controllers
                         PhoneNumber = coordinatiorSchool.PhoneNumber,
                         Active = false,
                         NationalityId = coordinatiorSchool.Nationality,
-                        Certificate=userFile
+                        Certificate = userFile,
+                        SchoolId = 1//School default before Creating their school.
                     };
 
                     //Creating the user in the bd
@@ -146,15 +147,15 @@ namespace IINTOS.Controllers
                         //TODO: Send email to admin
 
                         var adminList = await _userManager.GetUsersInRoleAsync("Admin");
-/*
-                        foreach (var userAux in adminList)
-                        {
-                           await _emailSender.SendEmailAsync(userAux.Email, "IINTOS - Coordinatior Request", "<p>A new Coordinator have requested to join the platform.</p>" +
-                                "<p> Go and check it out!</p>");
-                        }
-                        */
+                        /*
+                                                foreach (var userAux in adminList)
+                                                {
+                                                   await _emailSender.SendEmailAsync(userAux.Email, "IINTOS - Coordinatior Request", "<p>A new Coordinator have requested to join the platform.</p>" +
+                                                        "<p> Go and check it out!</p>");
+                                                }
+                                                */
 
-                        return RedirectToAction("Create", "Schools", new { area = "", coordinator = user.Email});
+                        return RedirectToAction("Create", "Schools", new { area = "", coordinator = user.Email });
                     }
                     return View();
                 }
@@ -256,7 +257,8 @@ namespace IINTOS.Controllers
                         Name = userViewModel.Name,
                         UserName = userViewModel.Email,
                         Email = userViewModel.Email,
-                        NationalityId=userViewModel.Nationality
+                        NationalityId = userViewModel.Nationality,
+                        SchoolId = 1 //School default
                     };
 
                     //Creating the user in the bd
@@ -271,7 +273,7 @@ namespace IINTOS.Controllers
                         var subject = "IINTOS";
                         var body = "You got register into the IINTOS platform! Please change you password when you first login.";
                         await _emailSender.SendEmailAsync(user.Email, subject, body);
-                        
+
                         //Shows the list of IINTOS Users
                         return RedirectToAction("ListUsers", "IINTOS");
                     }
@@ -315,7 +317,7 @@ namespace IINTOS.Controllers
         {
             // Pode associa-lo a uma escola ja existente
             // IINTOS: a escola nao precisa ser verificada
-            
+
             ViewBag.Roles = new SelectList(_context.Roles, "Name", "Name");
             ViewBag.Nationality = new SelectList(_context.Country, "Id", "Name");
 
@@ -337,7 +339,8 @@ namespace IINTOS.Controllers
                         UserName = userModel.Email,
                         Email = userModel.Email,
                         NationalityId = userModel.Nationality,
-                        Active = true
+                        Active = true,
+                        SchoolId = 1
                     };
 
                     //Creating the user in the bd

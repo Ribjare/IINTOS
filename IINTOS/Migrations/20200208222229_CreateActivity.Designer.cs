@@ -4,14 +4,16 @@ using IINTOS.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace IINTOS.Migrations
 {
     [DbContext(typeof(IINTOSContext))]
-    partial class IINTOSContextModelSnapshot : ModelSnapshot
+    [Migration("20200208222229_CreateActivity")]
+    partial class CreateActivity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,6 +50,14 @@ namespace IINTOS.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("SortName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -119,6 +129,22 @@ namespace IINTOS.Migrations
                     b.ToTable("Language");
                 });
 
+            modelBuilder.Entity("IINTOS.Models.Nationality", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Nationality");
+                });
+
             modelBuilder.Entity("IINTOS.Models.Newsletter", b =>
                 {
                     b.Property<int>("Id")
@@ -181,16 +207,13 @@ namespace IINTOS.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<bool>("Active")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Address")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("CoordinatiorId")
+                    b.Property<int>("CityId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CountryId")
+                    b.Property<int?>("CoordinatiorId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -202,7 +225,7 @@ namespace IINTOS.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CountryId");
+                    b.HasIndex("CityId");
 
                     b.ToTable("School");
                 });
@@ -257,11 +280,8 @@ namespace IINTOS.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<bool>("Active")
+                    b.Property<bool?>("Active")
                         .HasColumnType("bit");
-
-                    b.Property<int?>("CertificateId")
-                        .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -304,9 +324,6 @@ namespace IINTOS.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("SchoolCoordinationId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("SchoolId")
                         .HasColumnType("int");
 
@@ -322,8 +339,6 @@ namespace IINTOS.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CertificateId");
-
                     b.HasIndex("NationalityId");
 
                     b.HasIndex("NormalizedEmail")
@@ -334,37 +349,11 @@ namespace IINTOS.Migrations
                         .HasName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.HasIndex("SchoolCoordinationId")
+                    b.HasIndex("SchoolId")
                         .IsUnique()
-                        .HasFilter("[SchoolCoordinationId] IS NOT NULL");
-
-                    b.HasIndex("SchoolId");
+                        .HasFilter("[SchoolId] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
-                });
-
-            modelBuilder.Entity("IINTOS.Models.UserFile", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<byte[]>("Content")
-                        .HasColumnType("varbinary(max)");
-
-                    b.Property<string>("ContentType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FileName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("FileType")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UserFile");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -528,9 +517,9 @@ namespace IINTOS.Migrations
 
             modelBuilder.Entity("IINTOS.Models.School", b =>
                 {
-                    b.HasOne("IINTOS.Models.Country", "Country")
+                    b.HasOne("IINTOS.Models.City", "City")
                         .WithMany()
-                        .HasForeignKey("CountryId")
+                        .HasForeignKey("CityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -546,23 +535,15 @@ namespace IINTOS.Migrations
 
             modelBuilder.Entity("IINTOS.Models.User", b =>
                 {
-                    b.HasOne("IINTOS.Models.UserFile", "Certificate")
-                        .WithMany()
-                        .HasForeignKey("CertificateId");
-
-                    b.HasOne("IINTOS.Models.Country", "Nationality")
+                    b.HasOne("IINTOS.Models.Nationality", "Nationality")
                         .WithMany()
                         .HasForeignKey("NationalityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("IINTOS.Models.School", "SchoolCoordination")
-                        .WithOne("Coordinator")
-                        .HasForeignKey("IINTOS.Models.User", "SchoolCoordinationId");
-
                     b.HasOne("IINTOS.Models.School", "School")
-                        .WithMany("Professors")
-                        .HasForeignKey("SchoolId");
+                        .WithOne("Coordinator")
+                        .HasForeignKey("IINTOS.Models.User", "SchoolId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

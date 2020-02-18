@@ -1,0 +1,51 @@
+@model IINTOS.Models.Project
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4>Project</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Goal" class="control-label"></label>
+                <textarea asp-for="Goal" class="form-control"></textarea>
+                <span asp-validation-for="Goal" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <textarea asp-for="Description" class="form-control"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Links" class="control-label"></label>
+                <input asp-for="Links" placeholder="Link1; Link2; Link3" class="form-control" />
+                <span asp-validation-for="Links" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TargetAudience" class="control-label"></label>
+                <input asp-for="TargetAudience" class="form-control" />
+                <span asp-validation-for="TargetAudience" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Type" class="control-label"></label>
+                <select asp-for="Type" class="form-control">
+                    <option value="Presential">Presential</option>
+                    <option value="Online">Online</option>
+                </select>
+                <span asp-validation-for="Type" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
