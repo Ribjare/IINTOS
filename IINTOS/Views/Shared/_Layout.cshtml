@@ -36,6 +36,15 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="" asp-action="">News</a>
                         </li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="" asp-action="">Wiki</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="" asp-action="">Forum</a>
+                            </li>
+                        }
                         @if (User.IsInRole("Coordinator"))
                         {
                             <li class="nav-item">
@@ -47,13 +56,8 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Project" asp-action="">Project</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="" asp-action="">Wiki</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="" asp-action="">Forum</a>
-                            </li>
                         }
+
                         @if (User.IsInRole("IINTOS-Coordinator") || User.IsInRole("Admin"))
                         {
                             <li class="nav-item">
@@ -80,7 +84,8 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2020 - IINTOS - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2020 - IINTOS - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> - Platform Underdevelopment
+
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
