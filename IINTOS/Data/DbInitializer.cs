@@ -142,19 +142,37 @@ namespace IINTOS.Data
 
 
 
-				context.SaveChanges();
-			}
-			if (!context.Roles.Any())
-			{
-				// Creates the Roles
+            }
+            if (!context.Users.Any())
+            {
+                // Admin
+                User defaultUser = new User
+                {
+                    Name = "Admin Zé",
+                    UserName = "iintosdev@hotmail.com",
+                    Email = "iintosdev@hotmail.com",
+                    EmailConfirmed = true,
+                    About = "Admin default",
+                    Active = true,
+                    NationalityId = 1,
+                    SchoolId = 1
+                };
 
 				//System admin
 				await CreateRole("Admin", serviceProvider);
 
-				//Mobility Area
-				await CreateRole("Coordinator", serviceProvider);
-				await CreateRole("Professor", serviceProvider);
-				await CreateRole("Guest-Professor", serviceProvider);
+            // Coordenador IINTOS
+            User coordenadorIINTOS = new User
+            {
+                Name = "Coordenador Anturio",
+                UserName = "iceptalves@gmail.com",
+                Email = "iceptalves@gmail.com",
+                EmailConfirmed = true,
+                About = "Coordenador IINTOS default",
+                Active = true,
+                NationalityId = 1,
+                SchoolId = 1
+                };
 
 				//IINTOS Area
 				//IINTOS-Coordinator
@@ -195,27 +213,13 @@ namespace IINTOS.Data
 
 				}
 
-				User coordinatorUser = new User
-				{
-					Name = "Coordinator Zé",
-					UserName = "iintosc@hotmail.com",
-					Email = "iintosc@hotmail.com",
-					EmailConfirmed = true,
-					About = "Coordinator default",
-					Active = true,
-					NationalityId = 1,
-					SchoolId = 2
-				};
-				try
-				{
-					var result = await userManager.CreateAsync(coordinatorUser, "123456");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
 
-					if (result.Succeeded)
-					{
-						await userManager.AddToRoleAsync(coordinatorUser, "Coordinator");
-
-					}
-					context.SaveChanges();
+                }
+            }
 
 				}
 				catch (Exception e)
